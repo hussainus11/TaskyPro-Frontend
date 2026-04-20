@@ -26,6 +26,7 @@ export type ChatMessageProps = {
 
 export type ChatMessageDataProps = {
   file_name?: string;
+  name?: string;
   cover?: string;
   path?: string;
   duration?: string;

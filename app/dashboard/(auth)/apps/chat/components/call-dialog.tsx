@@ -114,7 +114,7 @@ export function CallDialog({ user, chatId }: CallDialogProps) {
                 id: currentUser.id,
                 name: currentUser.name || 'User',
                 email: currentUser.email || '',
-                avatar: currentUser.avatar,
+                avatar: currentUser.image,
               } : undefined}
               targetUser={user ? {
                 id: user.id,
