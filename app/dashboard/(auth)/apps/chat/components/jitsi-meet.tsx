@@ -178,7 +178,6 @@ export function JitsiMeet({
     DEFAULT_BACKGROUND: "#1a1a1a",
     DEFAULT_WELCOME_PAGE_LOGO_URL: "",
     DEFAULT_LOGO_URL: "",
-    HIDE_INVITE_MORE_HEADER: false,
     CONNECTION_INDICATOR_AUTO_HIDE_ENABLED: true,
     CONNECTION_INDICATOR_AUTO_HIDE_TIMEOUT: 5000,
     CONNECTION_INDICATOR_DISABLED: false,
@@ -263,11 +262,11 @@ export function JitsiMeet({
       <JitsiMeeting
         domain="meet.jit.si"
         roomName={roomName}
-        config={config}
-        interfaceConfig={interfaceConfig}
+        configOverwrite={config}
+        interfaceConfigOverwrite={interfaceConfig}
         userInfo={{
           displayName: userDisplayName || "User",
-          email: userEmail || undefined,
+          email: userEmail || "",
         }}
         getIFrameRef={(iframeRef) => {
           iframeRef.style.height = "100%";

@@ -121,7 +121,7 @@ export function VideoCallDialog({ user, chatId, workGroupId }: VideoCallDialogPr
                 id: currentUser.id,
                 name: currentUser.name || 'User',
                 email: currentUser.email || '',
-                avatar: currentUser.avatar,
+                avatar: currentUser.image,
               } : undefined}
               targetUser={user ? {
                 id: user.id,

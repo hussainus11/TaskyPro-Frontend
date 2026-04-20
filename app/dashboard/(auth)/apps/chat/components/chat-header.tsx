@@ -107,7 +107,7 @@ export function ChatHeader({ user, chatName }: ChatHeaderProps) {
                 <TooltipTrigger asChild>
                   <div>
                     <VideoCallDialog 
-                      user={selectedChat?.type === "GROUP" ? undefined : user}
+                      user={selectedChat?.type === "GROUP" ? undefined : (user ?? undefined)}
                       chatId={selectedChat?.type === "GROUP" ? selectedChat.id : undefined}
                     />
                   </div>
@@ -120,7 +120,7 @@ export function ChatHeader({ user, chatName }: ChatHeaderProps) {
                 <TooltipTrigger asChild>
                   <div>
                     <CallDialog 
-                      user={selectedChat?.type === "GROUP" ? undefined : user}
+                      user={selectedChat?.type === "GROUP" ? undefined : (user ?? undefined)}
                       chatId={selectedChat?.type === "GROUP" ? selectedChat.id : undefined}
                     />
                   </div>

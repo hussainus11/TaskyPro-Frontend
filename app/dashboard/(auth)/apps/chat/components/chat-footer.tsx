@@ -20,7 +20,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
-import type { EmojiClickData } from "emoji-picker-react";
+import { Theme as EmojiTheme, type EmojiClickData } from "emoji-picker-react";
 
 // Dynamically import EmojiPicker to avoid SSR issues
 const EmojiPicker = dynamic(
@@ -30,7 +30,7 @@ const EmojiPicker = dynamic(
 
 export function ChatFooter({ onSendMessage }: { onSendMessage?: () => void }) {
   const { selectedChat } = useChatStore();
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -396,7 +396,7 @@ export function ChatFooter({ onSendMessage }: { onSendMessage?: () => void }) {
                     <EmojiPicker
                       onEmojiClick={onEmojiClick}
                       autoFocusSearch={false}
-                      theme={theme === 'dark' ? 'dark' : 'light'}
+                      theme={resolvedTheme === "dark" ? EmojiTheme.DARK : EmojiTheme.LIGHT}
                     />
                   </PopoverContent>
                 </Popover>

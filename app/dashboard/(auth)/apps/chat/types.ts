@@ -31,6 +31,7 @@ export type ChatMessageDataProps = {
   path?: string;
   duration?: string;
   size?: string;
+  starred?: boolean;
   images?: [];
 };
 

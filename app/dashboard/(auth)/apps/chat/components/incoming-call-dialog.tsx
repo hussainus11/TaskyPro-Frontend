@@ -200,7 +200,7 @@ export function IncomingCallDialog({
               id: currentUser.id,
               name: currentUser.name || 'User',
               email: currentUser.email || '',
-              avatar: currentUser.avatar,
+              avatar: currentUser.image,
             } : undefined}
           />
         </DialogContent>

@@ -4184,6 +4184,12 @@ export const chatMessageApi = {
     }),
 
   // Forward a message
+  forwardMessage: (messageId: number, targetChatId: number) =>
+    apiRequest(`/chat-messages/${messageId}/forward`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ targetChatId }),
+    }),
 };
 
 // Chat Access API functions
@@ -4254,12 +4260,6 @@ export const chatAccessApi = {
     headers: getAuthHeaders(),
     body: JSON.stringify({ userId, targetUserId }),
   }),
-  forwardMessage: (messageId: number, targetChatId: number) =>
-    apiRequest(`/chat-messages/${messageId}/forward`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ targetChatId }),
-    }),
 };
 
 // Call API functions for WebRTC
