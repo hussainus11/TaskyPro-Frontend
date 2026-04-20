@@ -1,0 +1,251 @@
+/* Office-like styling for document editors */
+
+/* Word Document Editor Styles */
+.office-document-editor {
+  background: #fff;
+  font-family: 'Calibri', 'Arial', sans-serif;
+}
+
+.office-document-editor .ProseMirror {
+  background: #fff;
+  color: #000;
+  font-size: 11pt;
+  line-height: 1.15;
+  padding: 1in;
+  min-height: 11in;
+  width: 8.5in;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.office-document-editor .ProseMirror p {
+  margin: 0 0 6pt 0;
+}
+
+.office-document-editor .ProseMirror h1,
+.office-document-editor .ProseMirror h2,
+.office-document-editor .ProseMirror h3 {
+  margin-top: 12pt;
+  margin-bottom: 6pt;
+}
+
+/* Excel Spreadsheet Styles */
+.office-spreadsheet {
+  background: #fff;
+  font-family: 'Calibri', 'Arial', sans-serif;
+}
+
+.excel-spreadsheet {
+  font-family: 'Calibri', 'Arial', sans-serif;
+  font-size: 11pt;
+  background: #e7e6e6 !important;
+}
+
+.excel-spreadsheet .ht_clone_top,
+.excel-spreadsheet .ht_clone_left,
+.excel-spreadsheet .ht_clone_corner {
+  background: #f2f2f2 !important;
+  border-right: 1px solid #d0d0d0 !important;
+  border-bottom: 1px solid #d0d0d0 !important;
+}
+
+.excel-spreadsheet .ht_clone_top th,
+.excel-spreadsheet .ht_clone_left th {
+  background: #f2f2f2 !important;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
+  border: 1px solid #d0d0d0 !important;
+  font-size: 10pt;
+  padding: 4px;
+}
+
+/* Make all cells visible with borders and background */
+.excel-spreadsheet td,
+.excel-spreadsheet .htCore td,
+.excel-spreadsheet .htCore tbody td,
+.excel-spreadsheet .ht_master .htCore td {
+  border: 1px solid #d0d0d0 !important;
+  background: #ffffff !important;
+  padding: 2px 4px !important;
+  color: #000000 !important;
+  min-width: 64px;
+  min-height: 21px;
+}
+
+/* Ensure table cells are visible */
+.excel-spreadsheet table td {
+  border: 1px solid #d0d0d0 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* Make sure the table itself is visible */
+.excel-spreadsheet .htCore table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.excel-spreadsheet .htCore table td {
+  border: 1px solid #d0d0d0 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.excel-spreadsheet .currentRow,
+.excel-spreadsheet .currentCol {
+  background: #e6f3ff !important;
+}
+
+.excel-spreadsheet .area {
+  background: #ffffff !important;
+}
+
+.excel-spreadsheet .ht_master .wtHolder {
+  background: #e7e6e6 !important;
+}
+
+.excel-spreadsheet .handsontable.ht_master {
+  background: #e7e6e6 !important;
+}
+
+/* Row and Column Headers */
+.excel-spreadsheet .ht_clone_left .htCore td {
+  background: #f2f2f2 !important;
+  color: #000;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid #d0d0d0 !important;
+}
+
+.excel-spreadsheet .ht_clone_top .htCore th {
+  background: #f2f2f2 !important;
+  color: #000;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid #d0d0d0 !important;
+}
+
+/* Selected Cell */
+.excel-spreadsheet .current {
+  background: #d0e8f2 !important;
+  border: 2px solid #0078d4 !important;
+}
+
+.excel-spreadsheet .area {
+  border: 1px solid #d0d0d0 !important;
+}
+
+/* Additional cell visibility rules */
+.excel-cell {
+  border: 1px solid #d0d0d0 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* Ensure Handsontable cells are visible */
+.handsontable td {
+  border: 1px solid #d0d0d0 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.handsontable .htCore td {
+  border: 1px solid #d0d0d0 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* Office Ribbon Styles */
+.office-ribbon {
+  background: #f3f3f3;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.office-ribbon-tab {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 11pt;
+  color: #333;
+}
+
+.office-ribbon-tab:hover {
+  background: #e6e6e6;
+}
+
+.office-ribbon-tab.active {
+  background: #f3f3f3;
+  border-bottom: 2px solid #0078d4;
+  color: #0078d4;
+}
+
+.office-ribbon-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 8px;
+}
+
+.office-ribbon-group-label {
+  font-size: 10px;
+  color: #666;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.office-ribbon-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.office-ribbon-button:hover {
+  background: #e6e6e6;
+  border-color: #d0d0d0;
+}
+
+.office-ribbon-button.active {
+  background: #d0e8f2;
+  border-color: #0078d4;
+}
+
+/* Dark mode adjustments */
+.dark .office-document-editor {
+  background: #1e1e1e;
+  color: #fff;
+}
+
+.dark .office-document-editor .ProseMirror {
+  background: #1e1e1e;
+  color: #fff;
+}
+
+.dark .office-ribbon {
+  background: #1e1e1e;
+  border-bottom-color: #3e3e3e;
+}
+
+.dark .handsontable {
+  background: #1e1e1e;
+  color: #fff;
+}
+
+.dark .handsontable th {
+  background: #2d2d2d;
+  color: #fff;
+}
+
+.dark .handsontable td {
+  background: #1e1e1e;
+  color: #fff;
+  border-color: #3e3e3e;
+}
+
