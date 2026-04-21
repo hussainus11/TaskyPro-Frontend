@@ -78,47 +78,51 @@ export function NavDesktop({ isCollapsed, accounts, currentFolder = "INBOX", onF
     }
   };
 
+  /** Keeps `variant` typed as "default" | "ghost" (not `string`) for Nav props. */
+  const folderVariant = (active: boolean): "default" | "ghost" =>
+    active ? "default" : "ghost";
+
   const folderLinks = [
     {
       title: "Inbox",
       label: mailCounts.folders.inbox > 0 ? mailCounts.folders.inbox.toString() : "",
       icon: Inbox,
-      variant: currentFolder === "INBOX" ? "default" : "ghost" as const,
+      variant: folderVariant(currentFolder === "INBOX"),
       folder: "INBOX"
     },
     {
       title: "Drafts",
       label: mailCounts.folders.drafts > 0 ? mailCounts.folders.drafts.toString() : "",
       icon: File,
-      variant: currentFolder === "DRAFT" ? "default" : "ghost" as const,
+      variant: folderVariant(currentFolder === "DRAFT"),
       folder: "DRAFT"
     },
     {
       title: "Sent",
       label: "",
       icon: Send,
-      variant: currentFolder === "SENT" ? "default" : "ghost" as const,
+      variant: folderVariant(currentFolder === "SENT"),
       folder: "SENT"
     },
     {
       title: "Junk",
       label: mailCounts.folders.junk > 0 ? mailCounts.folders.junk.toString() : "",
       icon: ArchiveX,
-      variant: currentFolder === "SPAM" ? "default" : "ghost" as const,
+      variant: folderVariant(currentFolder === "SPAM"),
       folder: "SPAM"
     },
     {
       title: "Trash",
       label: "",
       icon: Trash2,
-      variant: currentFolder === "TRASH" ? "default" : "ghost" as const,
+      variant: folderVariant(currentFolder === "TRASH"),
       folder: "TRASH"
     },
     {
       title: "Archive",
       label: "",
       icon: Archive,
-      variant: currentFolder === "ARCHIVE" ? "default" : "ghost" as const,
+      variant: folderVariant(currentFolder === "ARCHIVE"),
       folder: "ARCHIVE"
     }
   ];
