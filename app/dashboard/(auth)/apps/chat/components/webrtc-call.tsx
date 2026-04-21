@@ -80,6 +80,14 @@ export function WebRTCCall({
   const socketInitializedRef = useRef<string | null>(null); // Track which callId we've initialized for
 
   const currentUser = localUser || getCurrentUser();
+  const currentUserAvatar =
+    currentUser && typeof currentUser === "object"
+      ? "avatar" in currentUser
+        ? currentUser.avatar
+        : "image" in currentUser
+          ? currentUser.image
+          : undefined
+      : undefined;
 
   // Initialize Socket.io connection
   useEffect(() => {
@@ -797,7 +805,7 @@ export function WebRTCCall({
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-muted">
                   <Avatar className="size-24">
-                    <AvatarImage src={currentUser?.avatar} />
+                    <AvatarImage src={currentUserAvatar} />
                     <AvatarFallback>{generateAvatarFallback(currentUser?.name || 'You')}</AvatarFallback>
                   </Avatar>
                 </div>
