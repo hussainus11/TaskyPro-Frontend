@@ -17,6 +17,7 @@ interface AccountSwitcherProps {
     label: string;
     email: string;
     icon: React.ReactNode;
+    smtpSettingId?: number | string | null;
   }[];
 }
 

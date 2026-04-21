@@ -25,6 +25,8 @@ interface MailProps {
     label: string;
     email: string;
     icon: React.ReactNode;
+    /** Present when account comes from API (used for IMAP fetch). */
+    smtpSettingId?: number | string | null;
   }[];
   mails: Mail[];
   defaultLayout: number[] | undefined;
@@ -171,8 +173,10 @@ export function Mail({
                     onClick={async () => {
                       try {
                         setLoading(true);
-                        const smtpSettingId = initialAccounts[0].smtpSettingId;
-                        if (smtpSettingId) {
+                        const rawId = initialAccounts[0].smtpSettingId;
+                        const smtpSettingId =
+                          typeof rawId === "string" ? Number(rawId) : rawId;
+                        if (smtpSettingId != null && !Number.isNaN(smtpSettingId)) {
                           const result = await mailApi.fetchEmails(smtpSettingId);
                           toast.success(result.message || `Fetched ${result.count || 0} new emails`);
                           // Reload mails after a short delay
