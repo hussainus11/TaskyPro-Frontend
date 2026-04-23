@@ -39,7 +39,7 @@ const locationFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type LocationFormValues = z.infer<typeof locationFormSchema>;
+type LocationFormValues = z.input<typeof locationFormSchema>;
 
 interface LocationDialogProps {
   open: boolean;
@@ -123,11 +123,12 @@ export function LocationDialog({
   const onSubmit = async (data: LocationFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = locationFormSchema.parse(data);
       if (location) {
-        await locationsApi.updateLocation(location.id, data);
+        await locationsApi.updateLocation(location.id, parsed);
         toast.success("Location updated successfully");
       } else {
-        await locationsApi.createLocation(data);
+        await locationsApi.createLocation(parsed);
         toast.success("Location created successfully");
       }
       if (onSuccess) onSuccess();

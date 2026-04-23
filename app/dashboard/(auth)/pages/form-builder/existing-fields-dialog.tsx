@@ -22,6 +22,8 @@ import { FormField } from "./form-builder";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+type FormFieldWithDescription = FormField & { description?: string | null };
+
 const ENTITY_TYPES = [
   { value: "LEAD", label: "Lead" },
   { value: "DEAL", label: "Deal" },
@@ -50,7 +52,7 @@ export function ExistingFieldsDialog({
   onFieldsSelect,
   existingFieldIds = []
 }: ExistingFieldsDialogProps) {
-  const [fields, setFields] = useState<FormField[]>([]);
+  const [fields, setFields] = useState<FormFieldWithDescription[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedEntityType, setSelectedEntityType] = useState<string>(
@@ -74,12 +76,12 @@ export function ExistingFieldsDialog({
       );
       
       // Extract all fields from all templates
-      const allFields: FormField[] = [];
-      const fieldMap = new Map<string, FormField>(); // Use map to deduplicate by name
+      const allFields: FormFieldWithDescription[] = [];
+      const fieldMap = new Map<string, FormFieldWithDescription>(); // Use map to deduplicate by name
       
       (Array.isArray(templates) ? templates : []).forEach((template: any) => {
         const templateFields = Array.isArray(template.formFields) ? template.formFields : [];
-        templateFields.forEach((field: FormField) => {
+        templateFields.forEach((field: FormFieldWithDescription) => {
           // Only add if not already added (deduplicate by name)
           if (!fieldMap.has(field.name)) {
             fieldMap.set(field.name, field);

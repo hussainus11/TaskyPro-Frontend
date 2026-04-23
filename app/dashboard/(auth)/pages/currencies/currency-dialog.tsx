@@ -34,7 +34,7 @@ const currencyFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type CurrencyFormValues = z.infer<typeof currencyFormSchema>;
+type CurrencyFormValues = z.input<typeof currencyFormSchema>;
 
 interface CurrencyDialogProps {
   open: boolean;
@@ -98,11 +98,12 @@ export function CurrencyDialog({
   const onSubmit = async (data: CurrencyFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = currencyFormSchema.parse(data);
       if (currency) {
-        await currenciesApi.updateCurrency(currency.id, data);
+        await currenciesApi.updateCurrency(currency.id, parsed);
         toast.success("Currency updated successfully");
       } else {
-        await currenciesApi.createCurrency(data);
+        await currenciesApi.createCurrency(parsed);
         toast.success("Currency created successfully");
       }
       if (onSuccess) onSuccess();

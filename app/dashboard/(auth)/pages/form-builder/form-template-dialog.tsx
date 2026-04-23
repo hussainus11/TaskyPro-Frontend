@@ -106,11 +106,14 @@ export function FormTemplateDialog({
         
         console.log('Loading template sections with dbIds:', templateSections.map((s: any) => ({ id: s.id, dbId: s.dbId, title: s.title })));
         console.log('Loading template fields with dbIds:', templateFields.map((f: any) => ({ id: f.id, dbId: f.dbId, label: f.label })));
+
+        const normalizedEntityType =
+          templateToUse.entityType === "COMPANY" ? "CUSTOMER" : templateToUse.entityType;
         
         form.reset({
           name: templateToUse.name,
           description: templateToUse.description || "",
-          entityType: templateToUse.entityType,
+          entityType: normalizedEntityType as FormTemplateFormValues["entityType"],
           customEntityName: (templateToUse as any).customEntityName || "",
           formFields: templateFields,
           sections: templateSections,

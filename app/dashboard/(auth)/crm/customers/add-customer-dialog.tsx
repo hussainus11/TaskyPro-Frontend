@@ -234,9 +234,8 @@ export function AddCustomerDialog({ open, onOpenChange, onSaved, customer, templ
               : "Enter customer details below. All fields except name are optional."}
           </DialogDescription>
         </DialogHeader>
-        
-        (
-          <form onSubmit={handleDefaultFormSubmit} className="space-y-4">
+
+        <form onSubmit={handleDefaultFormSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name *</Label>
@@ -331,7 +330,6 @@ export function AddCustomerDialog({ open, onOpenChange, onSaved, customer, templ
               </Button>
             </DialogFooter>
           </form>
-        )}
       </DialogContent>
     </Dialog>
   );

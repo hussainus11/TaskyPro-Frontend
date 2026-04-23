@@ -53,7 +53,7 @@ const smtpSettingFormSchema = z.object({
   isDefault: z.boolean().default(false)
 });
 
-type SmtpSettingFormValues = z.infer<typeof smtpSettingFormSchema>;
+type SmtpSettingFormValues = z.input<typeof smtpSettingFormSchema>;
 
 interface SmtpSettingDialogProps {
   open: boolean;
@@ -181,11 +181,12 @@ export function SmtpSettingDialog({
   const onSubmit = async (data: SmtpSettingFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = smtpSettingFormSchema.parse(data);
       // Don't send masked password
       const submitData = {
-        ...data,
-        port: parseInt(data.port),
-        password: data.password === "••••••••" ? undefined : data.password
+        ...parsed,
+        port: parseInt(parsed.port),
+        password: parsed.password === "••••••••" ? undefined : parsed.password
       };
 
       if (setting) {

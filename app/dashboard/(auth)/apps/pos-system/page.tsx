@@ -108,7 +108,7 @@ export default function Page() {
             if (orderData && orderData.items) {
               // Map order items to cart items
               const cartItems = orderData.items.map((item: any) => {
-                const product = transformedProducts.find((p) => p.id === String(item.productId));
+                const product = transformedProducts.find((p: { id: string }) => p.id === String(item.productId));
                 if (product) {
                   return {
                     product: {

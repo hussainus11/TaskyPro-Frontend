@@ -89,11 +89,11 @@ export function AddReminderDialog({ onSuccess }: AddReminderDialogProps) {
 
   const getPriorityColor = (priority: Priority) => {
     switch (priority) {
-      case "low":
+      case "LOW":
         return "text-gray-400";
-      case "medium":
+      case "MEDIUM":
         return "text-orange-400";
-      case "high":
+      case "HIGH":
         return "text-red-500";
       default:
         return "text-gray-400";

@@ -70,7 +70,11 @@ export function ActivitiesTab() {
   }, [activities]);
 
   const uniqueEntityTypes = useMemo(() => {
-    const entityTypes = new Set(activities.map(a => a.entityType).filter(Boolean));
+    const entityTypes = new Set(
+      activities
+        .map((a) => a.entityType)
+        .filter((v): v is string => typeof v === "string" && v.length > 0)
+    );
     return Array.from(entityTypes).sort();
   }, [activities]);
 

@@ -47,7 +47,8 @@ export default function Page() {
         customerApi.getCustomers(params).catch(() => []),
         entityDataApi.getEntityDataByType('LEAD', params).catch(() => []),
         entityDataApi.getEntityDataByType('DEAL', params).catch(() => []),
-        orderApi.getOrders(params).catch(() => [])
+        // Orders API doesn't support company/branch params here (auth token scopes it).
+        orderApi.getOrders({ limit: 50 }).catch(() => [])
       ]);
 
       setDashboardData({

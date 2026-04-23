@@ -127,6 +127,28 @@ export type ConditionConfig = {
   rules: ConditionRule[]; // Top-level rules for backward compatibility
 };
 
+type LegacyConditionConfig = {
+  logic?: "AND" | "OR";
+  rules?: Array<{
+    id?: string;
+    field?: string;
+    operator?: string;
+    value?: string | number | boolean;
+    dataType?: string;
+  }>;
+  groups?: unknown;
+};
+
+type ConditionConfigLike = ConditionConfig | LegacyConditionConfig;
+
+type WorkflowNodeData = {
+  label: string;
+  type: StepType;
+  description?: string;
+  config?: any;
+  conditionConfig?: ConditionConfigLike;
+};
+
 export type WorkflowStep = {
   id: string;
   type: StepType;
@@ -559,11 +581,11 @@ function ConditionGroupComponent({
 }
 
 export function WorkflowBuilder({ initialData, onSave, onClose, companyId, branchId }: WorkflowBuilderProps) {
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [selectedNode, setSelectedNode] = React.useState<Node | null>(null);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node<WorkflowNodeData>>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+  const [selectedNode, setSelectedNode] = React.useState<Node<WorkflowNodeData> | null>(null);
   const [nodeDialogOpen, setNodeDialogOpen] = React.useState(false);
-  const [editingNode, setEditingNode] = React.useState<Node | null>(null);
+  const [editingNode, setEditingNode] = React.useState<Node<WorkflowNodeData> | null>(null);
   const [nodeLabel, setNodeLabel] = React.useState("");
   const [nodeType, setNodeType] = React.useState<StepType>("ACTION");
   const [nodeDescription, setNodeDescription] = React.useState("");
@@ -578,6 +600,21 @@ export function WorkflowBuilder({ initialData, onSave, onClose, companyId, branc
 
   // Helper function to generate unique IDs
   const generateId = React.useCallback(() => `cond-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, []);
+
+  const normalizeConditionConfig = React.useCallback(
+    (input?: ConditionConfigLike): ConditionConfig => {
+      if (!input || typeof input !== "object") {
+        return { logic: "AND", groups: [], rules: [] };
+      }
+
+      const cfg = input as Partial<ConditionConfig> & LegacyConditionConfig;
+      const logic: "AND" | "OR" = cfg.logic === "OR" ? "OR" : "AND";
+      const groups = Array.isArray(cfg.groups) ? (cfg.groups as ConditionGroup[]) : [];
+      const rules = Array.isArray(cfg.rules) ? (cfg.rules as ConditionRule[]) : [];
+      return { logic, groups, rules };
+    },
+    []
+  );
 
   // Fetch roles from database based on company and branch
   React.useEffect(() => {
@@ -610,7 +647,7 @@ export function WorkflowBuilder({ initialData, onSave, onClose, companyId, branc
   // Load initial data
   React.useEffect(() => {
     if (initialData) {
-      const flowNodes: Node[] = initialData.steps.map((step) => ({
+      const flowNodes: Node<WorkflowNodeData>[] = initialData.steps.map((step) => ({
         id: step.id,
         type: "workflow",
         position: step.position || { x: Math.random() * 400, y: Math.random() * 400 },
@@ -639,7 +676,7 @@ export function WorkflowBuilder({ initialData, onSave, onClose, companyId, branc
       // Check if Start node exists, if not add it
       const hasStartNode = flowNodes.some(node => node.data.type === "START");
       if (!hasStartNode) {
-        const startNode: Node = {
+        const startNode: Node<any> = {
           id: "start-node",
           type: "workflow",
           position: { x: 400, y: 50 },
@@ -658,7 +695,7 @@ export function WorkflowBuilder({ initialData, onSave, onClose, companyId, branc
       setEdges(flowEdges);
     } else {
       // No initial data - create default Start node
-      const startNode: Node = {
+      const startNode: Node<any> = {
         id: "start-node",
         type: "workflow",
         position: { x: 400, y: 50 },
@@ -700,7 +737,7 @@ export function WorkflowBuilder({ initialData, onSave, onClose, companyId, branc
           );
         } else if (sourceNode?.data.type === "SWITCH" && params.sourceHandle) {
           // If source is a switch node, use sourceHandle to get the case label
-          const switchCases = sourceNode.data.config?.cases || [];
+          const switchCases = (sourceNode.data.config as any)?.cases || [];
           const switchCase = switchCases.find((c: any) => (c.id || `case-${switchCases.indexOf(c)}`) === params.sourceHandle);
           const label = switchCase?.label || switchCase?.value || params.sourceHandle;
 
@@ -726,7 +763,7 @@ export function WorkflowBuilder({ initialData, onSave, onClose, companyId, branc
     [setEdges, nodes]
   );
 
-  const onNodeClick = React.useCallback((_event: React.MouseEvent, node: Node) => {
+  const onNodeClick = React.useCallback((_event: React.MouseEvent, node: Node<any>) => {
     setSelectedNode(node);
     setEditingNode(node);
     setNodeLabel(node.data.label || "");
@@ -746,7 +783,7 @@ export function WorkflowBuilder({ initialData, onSave, onClose, companyId, branc
   const handleAddNode = (type: StepType) => {
     const config = stepTypeConfig[type];
     const initialConfig = type === "SWITCH" ? { cases: [] } : type === "CONDITION" ? {} : {};
-    const newNode: Node = {
+    const newNode: Node<any> = {
       id: `node-${Date.now()}`,
       type: "workflow",
       position: { x: Math.random() * 400 + 100, y: Math.random() * 400 + 100 },
@@ -812,14 +849,14 @@ export function WorkflowBuilder({ initialData, onSave, onClose, companyId, branc
     if (editingNode && editingNode.data.type === "CONDITION") {
       const existingConfig = editingNode.data.conditionConfig;
       if (existingConfig) {
+        const cfg = existingConfig as LegacyConditionConfig;
         // Check if it's old format (has rules but no groups)
-        if (existingConfig.rules && Array.isArray(existingConfig.rules) && 
-            (!existingConfig.groups || !Array.isArray(existingConfig.groups))) {
+        if (Array.isArray(cfg.rules) && (!("groups" in cfg) || !Array.isArray(cfg.groups))) {
           // Migrate old format to new format
-          const migratedGroups: ConditionGroup[] = existingConfig.rules.length > 0 ? [{
+          const migratedGroups: ConditionGroup[] = cfg.rules.length > 0 ? [{
             id: generateId(),
-            logic: existingConfig.logic || "AND",
-            rules: existingConfig.rules.map((r: any) => ({
+            logic: cfg.logic || "AND",
+            rules: cfg.rules.map((r) => ({
               id: r.id || generateId(),
               field: r.field || "",
               operator: r.operator || "equals",
@@ -829,17 +866,13 @@ export function WorkflowBuilder({ initialData, onSave, onClose, companyId, branc
             groups: []
           }] : [];
           setConditionConfig({
-            logic: existingConfig.logic || "AND",
+            logic: cfg.logic || "AND",
             groups: migratedGroups,
             rules: []
           });
         } else {
           // New format or already migrated
-          setConditionConfig({
-            logic: existingConfig.logic || "AND",
-            groups: existingConfig.groups || [],
-            rules: existingConfig.rules || []
-          });
+          setConditionConfig(normalizeConditionConfig(existingConfig));
         }
       }
     }
@@ -991,18 +1024,31 @@ export function WorkflowBuilder({ initialData, onSave, onClose, companyId, branc
           description: node.data.description,
           ...node.data.config
         },
-        conditionConfig: node.data.conditionConfig,
+        conditionConfig:
+          node.data.type === "CONDITION"
+            ? normalizeConditionConfig(node.data.conditionConfig)
+            : undefined,
         position: node.position
       })),
-      edges: edges.map((edge) => ({
-        id: edge.id,
-        source: edge.source,
-        target: edge.target,
-        label: edge.label,
-        condition: edge.data?.condition,
-        conditionType: edge.data?.conditionType,
-        switchCase: edge.data?.switchCase
-      }))
+      edges: edges.map((edge) => {
+        const label = typeof edge.label === "string" ? edge.label : undefined;
+        const condition = typeof edge.data?.condition === "string" ? edge.data.condition : undefined;
+        const conditionType =
+          edge.data?.conditionType === "true" || edge.data?.conditionType === "false"
+            ? edge.data.conditionType
+            : undefined;
+        const switchCase = typeof edge.data?.switchCase === "string" ? edge.data.switchCase : undefined;
+
+        return {
+          id: edge.id,
+          source: edge.source,
+          target: edge.target,
+          label,
+          condition,
+          conditionType,
+          switchCase
+        };
+      })
     };
 
     if (onSave) {

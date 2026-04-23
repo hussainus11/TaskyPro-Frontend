@@ -260,7 +260,7 @@ export default function CreatePricingPlanDialog({
         price: data.price,
         yearlyPrice: data.yearlyPrice || null,
         industry: data.industry || null,
-        features: data.features.map(f => f.text),
+        features: (data.features ?? []).map((f) => f.text).filter((t) => t.trim()),
         enabledMenuItems: data.enabledMenuItems || [],
         isActive: data.isActive,
       };

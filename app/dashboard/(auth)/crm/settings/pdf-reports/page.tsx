@@ -222,8 +222,8 @@ export default function PdfReportsPage() {
       setLoading(true);
       const user = getCurrentUser();
       const reports = await pdfReportApi.getPdfReports({
-        companyId: user?.companyId,
-        branchId: user?.branchId
+        companyId: user?.companyId ?? undefined,
+        branchId: user?.branchId ?? undefined
       });
       setData(reports);
     } catch (error: any) {

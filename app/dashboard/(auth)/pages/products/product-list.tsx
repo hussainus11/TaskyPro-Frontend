@@ -405,10 +405,11 @@ const createColumns = (
     header: "Rating",
     cell: ({ row }) => {
       const rating = row.getValue("rating");
-      if (!rating) return "-";
+      if (rating == null || rating === "") return "-";
       return (
         <div className="flex items-center gap-1">
-          <Star className="size-4 fill-orange-400 text-orange-400" /> {rating}
+          <Star className="size-4 fill-orange-400 text-orange-400" />{" "}
+          {typeof rating === "number" || typeof rating === "string" ? rating : String(rating)}
         </div>
       );
     }

@@ -186,7 +186,7 @@ export default function AddProductForm() {
   const [discountType, setDiscountType] = useState<"AMOUNT" | "PERCENTAGE" | "">("");
   const [discountValue, setDiscountValue] = useState("");
   
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<z.input<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: "",
@@ -502,15 +502,16 @@ export default function AddProductForm() {
     maxFiles: 5
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.input<typeof FormSchema>) {
     try {
+      const parsed = FormSchema.parse(data);
       // Handle image uploads - upload to server first (only if new file is selected)
       let imagePath: string | undefined = undefined;
       
       // In edit mode, check if we have an existing image path
-      if (isEditMode && data.file && data.file.startsWith('files/')) {
+      if (isEditMode && parsed.file && parsed.file.startsWith('files/')) {
         // Keep existing image path
-        imagePath = data.file;
+        imagePath = parsed.file;
       }
       
       // If new file is uploaded, upload it
@@ -518,7 +519,11 @@ export default function AddProductForm() {
         try {
           // Upload image to server
           const formData = new FormData();
-          formData.append('image', files[0].file);
+          const imageFile = files[0].file;
+          if (!(imageFile instanceof File)) {
+            throw new Error("Invalid file type");
+          }
+          formData.append("image", imageFile);
           
           const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
           const headers: HeadersInit = {};
@@ -550,46 +555,46 @@ export default function AddProductForm() {
       
       // Prepare product data - only include fields that have values
       const productData: any = {
-        name: data.name,
-        basePrice: data.basePrice || "0",
-        status: data.status || "draft",
-        quantity: inStock && data.quantity ? parseInt(data.quantity) || 0 : 0,
+        name: parsed.name,
+        basePrice: parsed.basePrice || "0",
+        status: parsed.status || "draft",
+        quantity: inStock && parsed.quantity ? parseInt(parsed.quantity) || 0 : 0,
         productType: productType,
       };
 
       // Add optional fields only if they have values
-      if (data.description?.trim()) {
-        productData.description = data.description.trim();
+      if (parsed.description?.trim()) {
+        productData.description = parsed.description.trim();
       }
-      if (data.sku?.trim()) {
-        productData.sku = data.sku.trim();
+      if (parsed.sku?.trim()) {
+        productData.sku = parsed.sku.trim();
       }
-      if (data.barcode?.trim()) {
-        productData.barcode = data.barcode.trim();
+      if (parsed.barcode?.trim()) {
+        productData.barcode = parsed.barcode.trim();
       }
-      if (data.discountedPrice) {
-        productData.discountedPrice = data.discountedPrice;
+      if (parsed.discountedPrice) {
+        productData.discountedPrice = parsed.discountedPrice;
       }
-      if (data.purchasePrice) {
-        productData.cost = data.purchasePrice;
+      if (parsed.purchasePrice) {
+        productData.cost = parsed.purchasePrice;
       }
-      if (data.chargeTax !== undefined) {
-        productData.chargeTax = data.chargeTax;
+      if (parsed.chargeTax !== undefined) {
+        productData.chargeTax = parsed.chargeTax;
       }
-      if (data.taxPercentage) {
-        productData.taxPercentage = data.taxPercentage;
+      if (parsed.taxPercentage) {
+        productData.taxPercentage = parsed.taxPercentage;
       }
-      if (data.discountType) {
-        productData.discountType = data.discountType;
+      if (parsed.discountType) {
+        productData.discountType = parsed.discountType;
       }
-      if (data.discountValue) {
-        productData.discountValue = data.discountValue;
+      if (parsed.discountValue) {
+        productData.discountValue = parsed.discountValue;
       }
-      if (data.category?.trim()) {
-        productData.category = data.category.trim();
+      if (parsed.category?.trim()) {
+        productData.category = parsed.category.trim();
       }
-      if (data.sub_category?.trim()) {
-        productData.sub_category = data.sub_category.trim();
+      if (parsed.sub_category?.trim()) {
+        productData.sub_category = parsed.sub_category.trim();
       }
       if (imagePath) {
         productData.image = imagePath;

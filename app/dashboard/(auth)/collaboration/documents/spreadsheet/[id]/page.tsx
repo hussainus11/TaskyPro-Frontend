@@ -10,6 +10,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { toast } from "sonner";
 import { HotTable } from "@handsontable/react";
 import { registerAllModules } from "handsontable/registry";
+import type { GridSettings } from "handsontable/settings";
 import "handsontable/dist/handsontable.full.min.css";
 
 // Register all Handsontable modules
@@ -194,7 +195,7 @@ export default function SpreadsheetEditorPage() {
   };
 
   // Only update settings when data or containerHeight changes, not on every render
-  const hotSettings = useMemo(() => {
+  const hotSettings = useMemo<GridSettings>(() => {
     const settingsData = data.length > 0 && data[0]?.length > 0 ? data : DEFAULT_DATA;
     return {
       data: settingsData,

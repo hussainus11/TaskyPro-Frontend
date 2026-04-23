@@ -133,9 +133,10 @@ export const createColumns = (
   {
     accessorKey: "category",
     header: "Category",
-    cell: ({ row }) => (
-      <Badge variant="outline">{categoryLabels[row.getValue("category")]}</Badge>
-    )
+    cell: ({ row }) => {
+      const category = row.getValue("category") as EmailTemplate["category"];
+      return <Badge variant="outline">{categoryLabels[category] ?? "Unknown"}</Badge>;
+    }
   },
   {
     accessorKey: "isActive",

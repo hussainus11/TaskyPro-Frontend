@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { userConnectionsApi } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth";
-import { getAvatarFallback } from "@/lib/utils";
+import { generateAvatarFallback } from "@/lib/utils";
 
 const teams = [
   { id: "1", icon: UsersIcon, name: "#digitalmarketing", members: 8 },

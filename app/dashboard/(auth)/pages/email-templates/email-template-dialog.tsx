@@ -61,7 +61,7 @@ const emailTemplateFormSchema = z.object({
   isDefault: z.boolean().default(false)
 });
 
-type EmailTemplateFormValues = z.infer<typeof emailTemplateFormSchema>;
+type EmailTemplateFormValues = z.input<typeof emailTemplateFormSchema>;
 
 interface EmailTemplateDialogProps {
   open: boolean;
@@ -188,11 +188,12 @@ export function EmailTemplateDialog({
   const onSubmit = async (data: EmailTemplateFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = emailTemplateFormSchema.parse(data);
       if (template) {
-        await emailTemplatesApi.updateEmailTemplate(template.id, data);
+        await emailTemplatesApi.updateEmailTemplate(template.id, parsed);
         toast.success("Email template updated successfully");
       } else {
-        await emailTemplatesApi.createEmailTemplate(data);
+        await emailTemplatesApi.createEmailTemplate(parsed);
         toast.success("Email template created successfully");
       }
       if (onSuccess) onSuccess();

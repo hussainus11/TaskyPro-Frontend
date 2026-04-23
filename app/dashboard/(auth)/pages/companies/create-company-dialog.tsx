@@ -1304,7 +1304,7 @@ export function DynamicFormDialog({
       const loadFeedData = async () => {
         try {
           // Load activities
-          const activitiesData = await activitiesApi.getActivities(currentCompanyId);
+          const activitiesData = await activitiesApi.getActivities({ companyId: currentCompanyId });
           setActivities(activitiesData || []);
           
           // Load comments

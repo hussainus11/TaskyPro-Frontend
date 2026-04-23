@@ -50,7 +50,7 @@ const emailSignatureFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type EmailSignatureFormValues = z.infer<typeof emailSignatureFormSchema>;
+type EmailSignatureFormValues = z.input<typeof emailSignatureFormSchema>;
 
 interface EmailSignatureDialogProps {
   open: boolean;
@@ -206,11 +206,12 @@ export function EmailSignatureDialog({
   const onSubmit = async (data: EmailSignatureFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = emailSignatureFormSchema.parse(data);
       if (signature) {
-        await emailSignaturesApi.updateEmailSignature(signature.id, data);
+        await emailSignaturesApi.updateEmailSignature(signature.id, parsed);
         toast.success("Email signature updated successfully");
       } else {
-        await emailSignaturesApi.createEmailSignature(data);
+        await emailSignaturesApi.createEmailSignature(parsed);
         toast.success("Email signature created successfully");
       }
       if (onSuccess) onSuccess();

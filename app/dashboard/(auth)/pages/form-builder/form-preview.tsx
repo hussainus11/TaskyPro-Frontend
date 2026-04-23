@@ -227,6 +227,14 @@ export function FormPreview({ fields, sections = [], templateName, templateDescr
         }
         
         // Single entry
+        const registered = !hasTypeOptions
+          ? form.register(field.name, {
+              required: isRequired ? `${field.label} is required` : false
+            })
+          : null;
+        const { onChange: registeredOnChange, ...registeredRest } =
+          (registered ?? {}) as unknown as { onChange?: (e: unknown) => void };
+
         return (
           <div key={field.id} className={widthClass}>
             <Label htmlFor={field.name}>
@@ -241,16 +249,15 @@ export function FormPreview({ fields, sections = [], templateName, templateDescr
                 value={typeof fieldValue === "object" ? fieldValue?.value || "" : (fieldValue || "")}
                 onChange={(e) => {
                   if (hasTypeOptions) {
-                    const currentType = typeof fieldValue === "object" ? fieldValue?.type : field.typeOptions[0];
+                    const fallbackType = field.typeOptions?.[0] ?? "";
+                    const currentType = typeof fieldValue === "object" ? (fieldValue?.type ?? fallbackType) : fallbackType;
                     form.setValue(field.name, { type: currentType, value: e.target.value });
                   } else {
-                    form.setValue(field.name, e.target.value);
+                    registeredOnChange?.(e);
                   }
                 }}
                 className={hasTypeOptions ? "flex-1" : ""}
-                {...(hasTypeOptions ? {} : form.register(field.name, {
-                  required: isRequired ? `${field.label} is required` : false
-                }))}
+                {...registeredRest}
               />
               {hasTypeOptions && (
                 <Select
@@ -264,7 +271,7 @@ export function FormPreview({ fields, sections = [], templateName, templateDescr
                     <SelectValue placeholder="Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    {field.typeOptions.map((option) => (
+                    {(field.typeOptions ?? []).map((option) => (
                       <SelectItem key={option} value={option}>
                         {option}
                       </SelectItem>
@@ -1357,7 +1364,7 @@ export function FormPreview({ fields, sections = [], templateName, templateDescr
               {/* Sections with their fields using grid system */}
               {(() => {
                 // Group sections into rows based on column count and available space
-                const rows: typeof sortedSections[][] = [];
+                const rows: typeof sortedSections[] = [];
                 let currentRow: typeof sortedSections = [];
                 let currentRowUsed = 0;
 

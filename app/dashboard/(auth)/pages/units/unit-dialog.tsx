@@ -35,7 +35,7 @@ const unitFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type UnitFormValues = z.infer<typeof unitFormSchema>;
+type UnitFormValues = z.input<typeof unitFormSchema>;
 
 interface UnitDialogProps {
   open: boolean;
@@ -99,11 +99,12 @@ export function UnitDialog({
   const onSubmit = async (data: UnitFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = unitFormSchema.parse(data);
       if (unit) {
-        await unitsApi.updateUnit(unit.id, data);
+        await unitsApi.updateUnit(unit.id, parsed);
         toast.success("Unit updated successfully");
       } else {
-        await unitsApi.createUnit(data);
+        await unitsApi.createUnit(parsed);
         toast.success("Unit created successfully");
       }
       if (onSuccess) onSuccess();

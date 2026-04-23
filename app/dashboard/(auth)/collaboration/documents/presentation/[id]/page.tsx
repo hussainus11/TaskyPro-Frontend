@@ -96,6 +96,33 @@ export default function PresentationEditorPage() {
     }
   };
 
+  const handleNameSave = async () => {
+    if (!documentName.trim()) {
+      setDocumentName(document.name || "");
+      setIsEditingName(false);
+      return;
+    }
+
+    if (documentName === document.name) {
+      setIsEditingName(false);
+      return;
+    }
+
+    try {
+      await documentsApi.updateDocument(parseInt(documentId), {
+        name: documentName.trim(),
+      });
+      setDocument({ ...document, name: documentName.trim() });
+      toast.success("Presentation name updated");
+      setIsEditingName(false);
+    } catch (error: any) {
+      console.error("Failed to update presentation name:", error);
+      toast.error("Failed to update presentation name");
+      setDocumentName(document.name || "");
+      setIsEditingName(false);
+    }
+  };
+
   const addSlide = () => {
     const newId = Date.now().toString();
     const newSlide: Slide = {

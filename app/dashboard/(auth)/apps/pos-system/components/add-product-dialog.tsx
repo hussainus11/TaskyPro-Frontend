@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AlertCircleIcon, ImageIcon, Plus, UploadIcon, XIcon } from "lucide-react";
 
 import { ProductCategory } from "@/app/dashboard/(auth)/apps/pos-system/store";
-import { useFileUpload } from "@/hooks/use-file-upload";
+import { useFileUpload, type FileMetadata } from "@/hooks/use-file-upload";
 import { productApi } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth";
 import { toast } from "sonner";
@@ -138,9 +138,14 @@ export default function AddProductDialog({ categories, onSuccess }: AddProductDi
 
       // Upload image if provided
       let imageUrl = "";
-      if (files[0]?.file) {
+      const selectedFile = files[0]?.file;
+
+      // `useFileUpload` can store either a browser `File` or existing metadata (already uploaded).
+      if (selectedFile && !(selectedFile instanceof File)) {
+        imageUrl = (selectedFile as FileMetadata).url || "";
+      } else if (selectedFile instanceof File) {
         const formData = new FormData();
-        formData.append("file", files[0].file);
+        formData.append("file", selectedFile);
         
         const uploadResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"}/upload`, {
           method: "POST",

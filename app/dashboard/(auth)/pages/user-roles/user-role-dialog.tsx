@@ -35,7 +35,7 @@ const userRoleFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type UserRoleFormValues = z.infer<typeof userRoleFormSchema>;
+type UserRoleFormValues = z.input<typeof userRoleFormSchema>;
 
 interface UserRoleDialogProps {
   open: boolean;
@@ -100,16 +100,17 @@ export function UserRoleDialog({
   const onSubmit = async (data: UserRoleFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = userRoleFormSchema.parse(data);
       if (role) {
         // Prevent modification of system roles
         if (role.isSystem) {
           toast.error("System roles cannot be modified");
           return;
         }
-        await userRolesApi.updateUserRole(role.id, data);
+        await userRolesApi.updateUserRole(role.id, parsed);
         toast.success("User role updated successfully");
       } else {
-        await userRolesApi.createUserRole(data);
+        await userRolesApi.createUserRole(parsed);
         toast.success("User role created successfully");
       }
       if (onSuccess) onSuccess();

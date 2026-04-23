@@ -66,7 +66,7 @@ export default function EditDealDashboardPage({ params }: { params: Promise<{ id
   React.useEffect(() => {
     const loadRoles = async () => {
       try {
-        const data = await userRolesApi.getUserRoles(user?.companyId, user?.branchId ?? undefined);
+        const data = await userRolesApi.getUserRoles(user?.companyId ?? undefined, user?.branchId ?? undefined);
         setRoles(Array.isArray(data) ? data : []);
       } catch {
         setRoles([]);

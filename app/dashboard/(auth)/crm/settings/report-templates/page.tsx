@@ -232,8 +232,8 @@ export default function ReportTemplatesPage() {
       setLoading(true);
       const user = getCurrentUser();
       const templates = await reportTemplateApi.getReportTemplates({
-        companyId: user?.companyId,
-        branchId: user?.branchId
+        companyId: user?.companyId ?? undefined,
+        branchId: user?.branchId ?? undefined
       });
       setData(templates);
     } catch (error: any) {
@@ -318,8 +318,8 @@ export default function ReportTemplatesPage() {
   const fetchEntityData = async (entityType: string) => {
     const user = getCurrentUser();
     const params = {
-      companyId: user?.companyId,
-      branchId: user?.branchId
+      companyId: user?.companyId ?? undefined,
+      branchId: user?.branchId ?? undefined
     };
 
     // Import APIs dynamically
@@ -329,9 +329,11 @@ export default function ReportTemplatesPage() {
       case 'CUSTOMER':
         return await customerApi.getCustomers(params);
       case 'ORDER':
-        return await orderApi.getOrders(params);
+        // Orders API doesn't support company/branch params here (auth token scopes it).
+        return await orderApi.getOrders({ limit: 100 });
       case 'PRODUCT':
-        return await productApi.getProducts(params);
+        // Products API uses status/category/search filters (auth token scopes it).
+        return await productApi.getProducts();
       case 'LEAD':
         return await entityDataApi.getEntityDataByType('LEAD', params);
       case 'DEAL':

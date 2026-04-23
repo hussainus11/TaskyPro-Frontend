@@ -46,7 +46,7 @@ const securityFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type SecurityFormValues = z.infer<typeof securityFormSchema>;
+type SecurityFormValues = z.input<typeof securityFormSchema>;
 
 interface SecurityDialogProps {
   open: boolean;
@@ -233,16 +233,17 @@ export function SecurityDialog({
   const onSubmit = async (data: SecurityFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = securityFormSchema.parse(data);
       // Ensure config is properly structured
-      if (!data.config && selectedType) {
-        data.config = getDefaultConfig(selectedType);
+      if (!parsed.config && selectedType) {
+        parsed.config = getDefaultConfig(selectedType);
       }
       
       if (security) {
-        await securitiesApi.updateSecurity(security.id, data);
+        await securitiesApi.updateSecurity(security.id, parsed);
         toast.success("Security setting updated successfully");
       } else {
-        await securitiesApi.createSecurity(data);
+        await securitiesApi.createSecurity(parsed);
         toast.success("Security setting created successfully");
       }
       if (onSuccess) onSuccess();

@@ -1,9 +1,10 @@
-import { PrismaClient } from '../../generated/prisma'
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined
-}
-
-export const prisma = globalForPrisma.prisma ?? new PrismaClient()
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+/**
+ * NOTE: This frontend package is built without Prisma.
+ *
+ * Prisma is a server-side dependency and isn't installed in this project, but a leftover
+ * `prisma.ts` file can still be picked up by TypeScript during `next build`.
+ *
+ * If you later add Prisma (and `@prisma/client`) to this package, replace this file with
+ * the standard PrismaClient singleton implementation.
+ */
+export const prisma = null as any;

@@ -280,22 +280,25 @@ export function FieldConfigDialog({
 
   const loadModelData = async () => {
     const config = form.watch("databaseConfig");
-    if (!config?.model || !config?.displayField || !config?.valueField) return;
+    if (!config?.model) return;
+    if (typeof config.displayField !== "string" || typeof config.valueField !== "string") return;
+    const displayField = config.displayField;
+    const valueField = config.valueField;
 
     try {
       setLoadingData(true);
       const data = await formTemplatesApi.getModelData(
         config.model,
-        config.displayField,
-        config.valueField
+        displayField,
+        valueField
       );
       setModelData(Array.isArray(data) ? data : []);
       
       // Auto-populate options from database
       if (data && Array.isArray(data) && data.length > 0) {
         form.setValue("options", data.map((item: any) => ({
-          label: item.label || item[config.displayField],
-          value: item.value || item[config.valueField]
+          label: item.label || item[displayField],
+          value: item.value || item[valueField]
         })));
       }
     } catch (error: any) {

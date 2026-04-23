@@ -78,7 +78,7 @@ const emailNotificationFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type EmailNotificationFormValues = z.infer<typeof emailNotificationFormSchema>;
+type EmailNotificationFormValues = z.input<typeof emailNotificationFormSchema>;
 
 interface EmailNotificationDialogProps {
   open: boolean;
@@ -192,10 +192,11 @@ export function EmailNotificationDialog({
   const onSubmit = async (data: EmailNotificationFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = emailNotificationFormSchema.parse(data);
       const notificationData = {
-        ...data,
+        ...parsed,
         trigger: {
-          event: data.type,
+          event: parsed.type,
           conditions: {}
         },
         recipients: {

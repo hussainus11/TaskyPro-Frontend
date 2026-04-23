@@ -957,10 +957,12 @@ export function CreateUserDialog({
               form="create-user-form"
               disabled={
                 isSubmitting ||
-                (activeMethod === "manual" &&
+                !!(
+                  activeMethod === "manual" &&
                   userQuota &&
                   userQuota.max !== null &&
-                  userQuota.current >= userQuota.max)
+                  userQuota.current >= userQuota.max
+                )
               }>
               {isSubmitting ? (
                 <>

@@ -549,14 +549,15 @@ export function FormRenderer({
                 type={inputType}
                 placeholder={field.placeholder}
                 value={typeof fieldValue === "object" ? fieldValue?.value || "" : (fieldValue || "")}
-                onChange={(e) => {
-                  if (hasTypeOptions) {
-                    const currentType = typeof fieldValue === "object" ? fieldValue?.type : field.typeOptions[0];
-                    form.setValue(field.name, { type: currentType, value: e.target.value });
-                  } else {
-                    form.setValue(field.name, e.target.value);
-                  }
-                }}
+                {...(hasTypeOptions
+                  ? {
+                      onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                        const currentType =
+                          typeof fieldValue === "object" ? fieldValue?.type : field.typeOptions![0];
+                        form.setValue(field.name, { type: currentType, value: e.target.value });
+                      },
+                    }
+                  : {})}
                 className={hasTypeOptions ? "flex-1" : ""}
                 {...(hasTypeOptions ? {} : form.register(field.name, {
                   required: isRequired ? `${field.label} is required` : false
@@ -574,7 +575,7 @@ export function FormRenderer({
                     <SelectValue placeholder="Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    {field.typeOptions.map((option) => (
+                    {field.typeOptions!.map((option) => (
                       <SelectItem key={option} value={option}>
                         {option}
                       </SelectItem>

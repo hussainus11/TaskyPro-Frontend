@@ -148,8 +148,8 @@ export const columns: ColumnDef<Order>[] = [
       const customer = row.original.customer;
       const searchValue = value.toLowerCase();
       return (
-        customer.name?.toLowerCase().includes(searchValue) ||
-        customer.email?.toLowerCase().includes(searchValue)
+        (customer.name ?? "").toLowerCase().includes(searchValue) ||
+        (customer.email ?? "").toLowerCase().includes(searchValue)
       );
     }
   },

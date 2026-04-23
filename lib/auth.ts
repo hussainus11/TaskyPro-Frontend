@@ -10,6 +10,16 @@ export interface User {
   companyId?: number | null;
   branchId?: number | null;
   image?: string;
+  /**
+   * Some API responses store a nested `company` object in localStorage's `user`.
+   * Keep this optional so UI code can update subscription fields without casts.
+   */
+  company?: {
+    plan?: string;
+    subscriptionStatus?: string;
+    billingCycle?: string;
+    [key: string]: any;
+  };
 }
 
 /**

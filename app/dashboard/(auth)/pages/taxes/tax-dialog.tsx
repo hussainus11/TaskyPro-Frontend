@@ -35,7 +35,7 @@ const taxFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type TaxFormValues = z.infer<typeof taxFormSchema>;
+type TaxFormValues = z.input<typeof taxFormSchema>;
 
 interface TaxDialogProps {
   open: boolean;
@@ -99,11 +99,12 @@ export function TaxDialog({
   const onSubmit = async (data: TaxFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = taxFormSchema.parse(data);
       if (tax) {
-        await taxesApi.updateTax(tax.id, data);
+        await taxesApi.updateTax(tax.id, parsed);
         toast.success("Tax updated successfully");
       } else {
-        await taxesApi.createTax(data);
+        await taxesApi.createTax(parsed);
         toast.success("Tax created successfully");
       }
       if (onSuccess) onSuccess();

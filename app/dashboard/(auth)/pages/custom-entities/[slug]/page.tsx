@@ -27,8 +27,8 @@ export default function CustomEntityPage() {
         const user = getCurrentUser();
         const page = await customEntityPageApi.getCustomEntityPageBySlug(
           slug,
-          user?.companyId,
-          user?.branchId
+          user?.companyId ?? undefined,
+          user?.branchId ?? undefined
         );
         setPageData(page);
       } catch (error: any) {

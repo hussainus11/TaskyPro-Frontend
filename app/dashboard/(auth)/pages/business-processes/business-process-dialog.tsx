@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { businessProcessesApi } from "@/lib/api";
+import { getCurrentUser } from "@/lib/auth";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -65,7 +66,7 @@ const businessProcessFormSchema = z.object({
   }).optional()
 });
 
-type BusinessProcessFormValues = z.infer<typeof businessProcessFormSchema>;
+type BusinessProcessFormValues = z.input<typeof businessProcessFormSchema>;
 
 interface BusinessProcessDialogProps {
   open: boolean;
@@ -214,6 +215,9 @@ export function BusinessProcessDialog({
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [workflowData, setWorkflowData] = React.useState<WorkflowData | null>(null);
   const [activeTab, setActiveTab] = React.useState("basic");
+  const currentUser = getCurrentUser();
+  const currentCompanyId = currentUser?.companyId ?? null;
+  const currentBranchId = currentUser?.branchId ?? null;
 
   const form = useForm<BusinessProcessFormValues>({
     resolver: zodResolver(businessProcessFormSchema),
@@ -898,14 +902,16 @@ export function BusinessProcessDialog({
                     />
 
                     {/* Event Preview */}
-                    {form.watch("eventConfig.events") && form.watch("eventConfig.events").length > 0 && (
+                    {(() => {
+                      const watchedEvents = form.watch("eventConfig.events") ?? [];
+                      return watchedEvents.length > 0 ? (
                       <div className="p-4 bg-muted/30 rounded-lg border">
                         <div className="flex items-start gap-2">
                           <Zap className="h-4 w-4 text-primary mt-0.5" />
                           <div className="flex-1">
                             <p className="text-sm font-medium mb-2">Event Preview</p>
                             <div className="flex flex-wrap gap-2">
-                              {(form.watch("eventConfig.events") || []).map((eventValue: string) => {
+                              {watchedEvents.map((eventValue: string) => {
                                 const event = eventOptions
                                   .flatMap((cat) => cat.events)
                                   .find((e) => e.value === eventValue);
@@ -922,7 +928,8 @@ export function BusinessProcessDialog({
                           </div>
                         </div>
                       </div>
-                    )}
+                      ) : null;
+                    })()}
                   </div>
                 )}
 
@@ -995,8 +1002,8 @@ export function BusinessProcessDialog({
               <WorkflowBuilder
                 initialData={workflowData}
                 onSave={handleWorkflowSave}
-                companyId={process?.companyId || null}
-                branchId={process?.branchId || null}
+                companyId={currentCompanyId}
+                branchId={currentBranchId}
               />
             </div>
           </TabsContent>

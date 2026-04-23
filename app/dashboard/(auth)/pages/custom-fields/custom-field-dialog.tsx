@@ -45,7 +45,7 @@ const customFieldFormSchema = z.object({
   options: z.string().optional()
 });
 
-type CustomFieldFormValues = z.infer<typeof customFieldFormSchema>;
+type CustomFieldFormValues = z.input<typeof customFieldFormSchema>;
 
 interface CustomFieldDialogProps {
   open: boolean;
@@ -139,13 +139,17 @@ export function CustomFieldDialog({
   const onSubmit = async (data: CustomFieldFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = customFieldFormSchema.parse(data);
       const fieldData = {
-        name: data.name,
-        type: data.type,
-        entity: data.entity,
-        required: data.required,
-        includeInReports: data.includeInReports,
-        options: data.type === "select" && data.options ? data.options.split("\n").filter(opt => opt.trim()) : null
+        name: parsed.name,
+        type: parsed.type,
+        entity: parsed.entity,
+        required: parsed.required,
+        includeInReports: parsed.includeInReports,
+        options:
+          parsed.type === "select" && parsed.options
+            ? parsed.options.split("\n").filter((opt) => opt.trim())
+            : null
       };
 
       if (field) {

@@ -5,7 +5,15 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { RefreshCw, Zap, Lock } from "lucide-react";
 
-const automationItems = [
+type AutomationItem = {
+  id: string;
+  title: string;
+  icon: typeof RefreshCw;
+  href?: string;
+  locked?: boolean;
+};
+
+const automationItems: AutomationItem[] = [
   {
     id: "business-processes",
     title: "Business Processes",
@@ -28,7 +36,7 @@ export default function AutomationPage() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleItemClick = (item: typeof automationItems[0]) => {
+  const handleItemClick = (item: AutomationItem) => {
     if (item.href) {
       router.push(item.href);
     } else if (!item.locked) {
@@ -55,7 +63,7 @@ export default function AutomationPage() {
                 : "border-border hover:border-primary/50"
             )}
             onClick={() => handleItemClick(item)}
-            disabled={item.locked}
+            disabled={!!item.locked}
           >
             <div className={cn(
               "mb-4 flex items-center justify-center",

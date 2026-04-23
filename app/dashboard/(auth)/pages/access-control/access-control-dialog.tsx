@@ -46,7 +46,7 @@ const accessControlFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type AccessControlFormValues = z.infer<typeof accessControlFormSchema>;
+type AccessControlFormValues = z.input<typeof accessControlFormSchema>;
 
 interface AccessControlDialogProps {
   open: boolean;
@@ -155,7 +155,10 @@ export function AccessControlDialog({
         try {
           setLoadingPipelines(true);
           const user = getCurrentUser();
-          const pipelinesData = await dealPipelinesApi.getDealPipelines(user?.companyId, user?.branchId);
+          const pipelinesData = await dealPipelinesApi.getDealPipelines(
+            user?.companyId ?? undefined,
+            user?.branchId ?? undefined
+          );
           setPipelines(Array.isArray(pipelinesData) ? pipelinesData : []);
         } catch (error) {
           console.error("Failed to load pipelines:", error);
@@ -178,7 +181,10 @@ export function AccessControlDialog({
           setLoadingStages(true);
           const user = getCurrentUser();
           if (resource === "leads") {
-            const stagesData = await leadStagesApi.getLeadStages(user?.companyId, user?.branchId);
+            const stagesData = await leadStagesApi.getLeadStages(
+              user?.companyId ?? undefined,
+              user?.branchId ?? undefined
+            );
             setStages(Array.isArray(stagesData) ? stagesData : []);
           } else if (resource === "deals" && selectedPipelineId) {
             // For deals, load stages from selected pipeline

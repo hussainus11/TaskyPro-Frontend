@@ -34,7 +34,7 @@ const dealPipelineFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type DealPipelineFormValues = z.infer<typeof dealPipelineFormSchema>;
+type DealPipelineFormValues = z.input<typeof dealPipelineFormSchema>;
 
 interface DealPipelineDialogProps {
   open: boolean;
@@ -94,11 +94,12 @@ export function DealPipelineDialog({
   const onSubmit = async (data: DealPipelineFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = dealPipelineFormSchema.parse(data);
       if (pipeline) {
-        await dealPipelinesApi.updateDealPipeline(pipeline.id, data);
+        await dealPipelinesApi.updateDealPipeline(pipeline.id, parsed);
         toast.success("Deal pipeline updated successfully");
       } else {
-        await dealPipelinesApi.createDealPipeline(data);
+        await dealPipelinesApi.createDealPipeline(parsed);
         toast.success("Deal pipeline created successfully");
       }
       if (onSuccess) onSuccess();

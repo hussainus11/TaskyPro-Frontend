@@ -57,21 +57,21 @@ export default function StatCards({ orders = [], customers = [], loading = false
       name: "Monthly recurring revenue",
       value: `$${(monthlyRevenue / 1000).toFixed(1)}K`,
       change: "+6.1%", // Placeholder - could calculate from previous month
-      changeType: "positive" as const,
+      changeType: "positive" as "positive" | "negative",
       href: "#"
     },
     {
       name: "Users",
       value: `${(totalUsers / 1000).toFixed(1)}K`,
       change: "+19.2%", // Placeholder
-      changeType: "positive" as const,
+      changeType: "positive" as "positive" | "negative",
       href: "#"
     },
     {
       name: "User growth",
       value: `${userGrowth.toFixed(1)}%`,
       change: userGrowth >= 0 ? `+${userGrowth.toFixed(1)}%` : `${userGrowth.toFixed(1)}%`,
-      changeType: (userGrowth >= 0 ? "positive" : "negative") as const,
+      changeType: (userGrowth >= 0 ? "positive" : "negative") as "positive" | "negative",
       href: "#"
     }
   ], [monthlyRevenue, totalUsers, userGrowth]);

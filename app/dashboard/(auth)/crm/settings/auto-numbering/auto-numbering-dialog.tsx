@@ -45,7 +45,9 @@ const autoNumberingFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type AutoNumberingFormValues = z.infer<typeof autoNumberingFormSchema>;
+// For react-hook-form + zodResolver, the form type should match the *input* shape
+// (defaults make fields optional on input).
+type AutoNumberingFormValues = z.input<typeof autoNumberingFormSchema>;
 
 interface AutoNumberingDialogProps {
   open: boolean;

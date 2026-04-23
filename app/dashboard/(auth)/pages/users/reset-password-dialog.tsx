@@ -40,7 +40,7 @@ const passwordFormSchema = z.object({
   path: ["password"],
 });
 
-type PasswordFormValues = z.infer<typeof passwordFormSchema>;
+type PasswordFormValues = z.input<typeof passwordFormSchema>;
 
 interface ResetPasswordDialogProps {
   open: boolean;
@@ -83,9 +83,10 @@ export function ResetPasswordDialog({
   const onSubmit = async (data: PasswordFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = passwordFormSchema.parse(data);
       const response = await usersApi.setUserPassword(userId, {
-        password: data.generateTemporary ? undefined : data.password,
-        generateTemporary: data.generateTemporary,
+        password: parsed.generateTemporary ? undefined : parsed.password,
+        generateTemporary: parsed.generateTemporary,
       });
 
       if (response.temporaryPassword) {

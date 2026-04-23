@@ -181,7 +181,7 @@ export const useStore = create<Store>((set, get) => ({
       const total = subtotal + tax;
 
       // Get or create POS Customer (single default customer)
-      let finalCustomerId = customerId;
+      let finalCustomerId: number | undefined = customerId;
       if (!finalCustomerId) {
         try {
           // Try to find existing POS Customer
@@ -206,6 +206,9 @@ export const useStore = create<Store>((set, get) => ({
         } catch (error: any) {
           throw new Error("Failed to get or create POS customer");
         }
+      }
+      if (!finalCustomerId) {
+        throw new Error("Failed to resolve customer");
       }
 
       // Create order items

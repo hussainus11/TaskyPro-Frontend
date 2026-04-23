@@ -132,7 +132,7 @@ export default function DocumentEditorPage() {
       }
 
       // Save content to backend
-      const htmlContent = editor?.getHTML() || content;
+      const htmlContent = editor?.getHTML() || (typeof content === "string" ? content : "");
       await documentsApi.updateDocument(parseInt(documentId), {
         name: documentName || document.name,
         content: htmlContent,

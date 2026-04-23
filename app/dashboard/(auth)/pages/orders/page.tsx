@@ -38,10 +38,8 @@ export default function Page() {
         const user = getCurrentUser();
         if (!user) return;
 
-        const data = await orderApi.getOrders({
-          companyId: user.companyId || undefined,
-          branchId: user.branchId || undefined
-        });
+        // `orderApi.getOrders` is scoped server-side via auth; it doesn't accept company/branch filters.
+        const data = await orderApi.getOrders();
 
         // Transform API data to match UI format
         const transformedOrders = data.map((order: any) => {

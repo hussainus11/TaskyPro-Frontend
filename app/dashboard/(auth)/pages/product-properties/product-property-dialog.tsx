@@ -44,7 +44,7 @@ const productPropertyFormSchema = z.object({
   isActive: z.boolean().default(true)
 });
 
-type ProductPropertyFormValues = z.infer<typeof productPropertyFormSchema>;
+type ProductPropertyFormValues = z.input<typeof productPropertyFormSchema>;
 
 interface ProductPropertyDialogProps {
   open: boolean;
@@ -132,11 +132,12 @@ export function ProductPropertyDialog({
   const onSubmit = async (data: ProductPropertyFormValues) => {
     setIsSubmitting(true);
     try {
+      const parsed = productPropertyFormSchema.parse(data);
       if (property) {
-        await productPropertiesApi.updateProductProperty(property.id, data);
+        await productPropertiesApi.updateProductProperty(property.id, parsed);
         toast.success("Product property updated successfully");
       } else {
-        await productPropertiesApi.createProductProperty(data);
+        await productPropertiesApi.createProductProperty(parsed);
         toast.success("Product property created successfully");
       }
       if (onSuccess) onSuccess();
