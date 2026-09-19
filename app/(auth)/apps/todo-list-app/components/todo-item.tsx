@@ -2,7 +2,12 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar, FileIcon, Star, BellIcon } from "lucide-react";
-import { priorityClasses, statusClasses } from "@/app/(auth)/apps/todo-list-app/enum";
+import {
+  priorityClasses,
+  statusClasses,
+  EnumTodoStatus,
+  EnumTodoPriority
+} from "@/app/(auth)/apps/todo-list-app/enum";
 import { Todo, TodoStatus } from "@/app/(auth)/apps/todo-list-app/types";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
@@ -134,8 +139,8 @@ const TodoItem: React.FC<TodoItemProps> = ({
           </CardContent>
           <CardFooter className="flex flex-wrap justify-between border-t">
             <div className="flex items-center gap-2 capitalize">
-              <Badge className={statusClasses[todo.status]}>{todo.status.replace("-", " ")}</Badge>
-              <Badge className={priorityClasses[todo.priority]}>{todo.priority}</Badge>
+              <Badge className={statusClasses[todo.status as EnumTodoStatus]}>{todo.status.replace("-", " ")}</Badge>
+              <Badge className={priorityClasses[todo.priority as EnumTodoPriority]}>{todo.priority}</Badge>
             </div>
 
             {(todo.files?.length || 0) > 0 && (
@@ -192,10 +197,10 @@ const TodoItem: React.FC<TodoItemProps> = ({
               </div>
 
               <div className="flex items-center gap-2 capitalize">
-                <Badge className={statusClasses[todo.status]}>
+                <Badge className={statusClasses[todo.status as EnumTodoStatus]}>
                   {todo.status.replace("-", " ")}
                 </Badge>
-                <Badge className={priorityClasses[todo.priority]}>{todo.priority}</Badge>
+                <Badge className={priorityClasses[todo.priority as EnumTodoPriority]}>{todo.priority}</Badge>
               </div>
             </div>
 

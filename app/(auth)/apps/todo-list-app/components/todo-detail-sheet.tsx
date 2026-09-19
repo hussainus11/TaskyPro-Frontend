@@ -13,7 +13,12 @@ import {
   ClockIcon
 } from "lucide-react";
 import { useTodoStore } from "@/app/(auth)/apps/todo-list-app/store";
-import { statusClasses, priorityClasses } from "@/app/(auth)/apps/todo-list-app/enum";
+import {
+  statusClasses,
+  priorityClasses,
+  EnumTodoStatus,
+  EnumTodoPriority
+} from "@/app/(auth)/apps/todo-list-app/enum";
 import { toast } from "sonner";
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -131,8 +136,8 @@ const TodoDetailSheet: React.FC<TodoDetailSheetProps> = ({
             )}
           </div>
           <div className="flex items-center gap-2 capitalize">
-            <Badge className={statusClasses[todo.status]}>{todo.status.replace("-", " ")}</Badge>
-            <Badge className={priorityClasses[todo.priority]}>{todo.priority}</Badge>
+            <Badge className={statusClasses[todo.status as EnumTodoStatus]}>{todo.status.replace("-", " ")}</Badge>
+            <Badge className={priorityClasses[todo.priority as EnumTodoPriority]}>{todo.priority}</Badge>
           </div>
         </SheetHeader>
 
