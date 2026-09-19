@@ -18,6 +18,7 @@ export interface User {
     plan?: string;
     subscriptionStatus?: string;
     billingCycle?: string;
+    isPlatformOwner?: boolean;
     [key: string]: any;
   };
 }

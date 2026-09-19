@@ -1,28 +1,54 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { API_BASE_URL } from "@/lib/api";
+import { companiesApi } from "@/lib/api";
+import { getCurrentUser } from "@/lib/auth";
 
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/components/ui/empty";
+import { ShieldAlert } from "lucide-react";
 import CompaniesDataTable, { Company } from "./data-table";
 import AddCompanySheet from "./add-company-sheet";
 
 export default function Page() {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isOwner, setIsOwner] = useState<boolean | null>(null);
 
-  const getCompanies = async () => {
-    const res = await fetch(`${API_BASE_URL}/companies`);
-    if (res.ok) {
-      const data = await res.json();
-      setCompanies(data);
+  const loadCompanies = async () => {
+    try {
+      const data = await companiesApi.getCompanies();
+      setCompanies(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Failed to load companies:", error);
+      setCompanies([]);
     }
   };
 
   useEffect(() => {
-    getCompanies();
+    const user = getCurrentUser();
+    setIsOwner(user?.company?.isPlatformOwner === true);
+    loadCompanies();
   }, []);
+
+  if (isOwner === null) {
+    return null;
+  }
+
+  if (!isOwner) {
+    return (
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <ShieldAlert />
+          </EmptyMedia>
+          <EmptyTitle>Restricted page</EmptyTitle>
+          <EmptyDescription>Only the platform administrator can manage companies.</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    );
+  }
 
   return (
     <>
@@ -36,7 +62,7 @@ export default function Page() {
       <AddCompanySheet
         isOpen={isSheetOpen}
         onClose={() => setIsSheetOpen(false)}
-        onSuccess={getCompanies}
+        onSuccess={loadCompanies}
       />
     </>
   );

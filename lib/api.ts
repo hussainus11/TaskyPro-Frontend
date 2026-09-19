@@ -154,6 +154,12 @@ export const companiesApi = {
   }),
 };
 
+// Platform billing API functions (platform-owner only)
+export const platformBillingApi = {
+  getTransactions: () => apiRequest('/platform-billing/transactions'),
+  getSummary: () => apiRequest('/platform-billing/summary'),
+};
+
 // Pricing Plans API functions
 export const pricingPlansApi = {
   // Get all pricing plans
