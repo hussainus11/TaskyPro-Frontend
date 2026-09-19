@@ -525,7 +525,7 @@ export const defaultNavItems: NavGroup[] = [
   }
 ];
 
-// Administration group - always shown at the end (not company-specific)
+// Administration group - appended only for the platform-owner company (see isPlatformOwner checks below)
 const administrationGroup: NavGroup = {
   title: "Administration",
   items: [
@@ -582,8 +582,11 @@ export function NavMain() {
             title: group.title,
             items: group.items.map(transformMenuItem),
           }));
-          // Always append Administration group at the end
-          setNavItems(filterNavGroups([...transformedMenus, administrationGroup]));
+          // Administration group is only visible to the platform-owner company
+          const menuGroups = user.company?.isPlatformOwner
+            ? [...transformedMenus, administrationGroup]
+            : transformedMenus;
+          setNavItems(filterNavGroups(menuGroups));
         } else {
           // Fallback to default nav items if API returns empty
           setNavItems(filterNavGroups(defaultNavItems));
@@ -749,8 +752,12 @@ export function NavMain() {
                       title: group.title,
                       items: group.items.map(transformMenuItem),
                     }));
-                    // Always append Administration group at the end
-                    setNavItems([...transformedMenus, administrationGroup]);
+                    // Administration group is only visible to the platform-owner company
+                    setNavItems(
+                      user.company?.isPlatformOwner
+                        ? [...transformedMenus, administrationGroup]
+                        : transformedMenus
+                    );
                   }
                 }
               } catch (error) {
@@ -807,8 +814,12 @@ export function NavMain() {
                   title: group.title,
                   items: group.items.map(transformMenuItem),
                 }));
-                // Always append Administration group at the end
-                setNavItems([...transformedMenus, administrationGroup]);
+                // Administration group is only visible to the platform-owner company
+                setNavItems(
+                  user.company?.isPlatformOwner
+                    ? [...transformedMenus, administrationGroup]
+                    : transformedMenus
+                );
               }
             }
           } catch (error) {
