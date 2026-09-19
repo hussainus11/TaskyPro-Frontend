@@ -54,14 +54,14 @@ export function BranchesStep() {
             <Label htmlFor="name">Branch Name</Label>
             <Input id="name" {...form.register("name")} />
             {form.formState.errors.name && (
-              <p className="text-red-500">{form.formState.errors.name.message}</p>
+              <p className="text-destructive text-sm">{form.formState.errors.name.message}</p>
             )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" {...form.register("email")} />
             {form.formState.errors.email && (
-              <p className="text-red-500">{form.formState.errors.email.message}</p>
+              <p className="text-destructive text-sm">{form.formState.errors.email.message}</p>
             )}
           </div>
           <div className="space-y-2">

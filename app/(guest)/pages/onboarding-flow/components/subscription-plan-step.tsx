@@ -2,26 +2,23 @@
 
 import { Button } from "@/components/ui/button";
 import { useOnboardingStore } from "../store";
-import { Sparkles, Check, X, Loader2 } from "lucide-react";
+import { Sparkles, Check, X, Loader2, Zap, Crown, Rocket } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from "@/components/ui/table";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const subscriptionPlans = [
   {
     id: "Free",
     title: "Free",
-    price: "Free",
+    price: "$0",
+    period: "forever",
+    tagline: "For trying things out",
+    icon: Sparkles,
     features: {
       users: true,
       storage: true,
@@ -42,7 +39,10 @@ const subscriptionPlans = [
   {
     id: "Basic",
     title: "Basic",
-    price: "$9/month",
+    price: "$9",
+    period: "/month",
+    tagline: "For small growing teams",
+    icon: Zap,
     features: {
       users: true,
       storage: true,
@@ -63,7 +63,11 @@ const subscriptionPlans = [
   {
     id: "Pro",
     title: "Pro",
-    price: "$19/month",
+    price: "$19",
+    period: "/month",
+    tagline: "For scaling businesses",
+    icon: Rocket,
+    popular: true,
     features: {
       users: true,
       storage: true,
@@ -84,7 +88,10 @@ const subscriptionPlans = [
   {
     id: "Enterprise",
     title: "Enterprise",
-    price: "$49/month",
+    price: "$49",
+    period: "/month",
+    tagline: "For large organizations",
+    icon: Crown,
     features: {
       users: true,
       storage: true,
@@ -105,31 +112,28 @@ const subscriptionPlans = [
 ];
 
 const featureLabels: Record<string, string> = {
-  users: "Users",
-  storage: "Storage",
-  projects: "Projects",
-  taskManagement: "Task Management",
+  users: "Unlimited users",
+  storage: "Cloud storage",
+  projects: "Unlimited projects",
+  taskManagement: "Task management",
   crm: "CRM",
-  support: "Support",
+  support: "Priority support",
   notifications: "Notifications",
   reporting: "Reporting",
-  api: "API & Integrations",
+  api: "API access",
   integrations: "Integrations",
-  branding: "Branding",
-  backup: "Backup & Export",
-  compliance: "Compliance",
-  audit: "Audit Logs"
+  branding: "Custom branding",
+  backup: "Backup & export",
+  compliance: "Compliance tools",
+  audit: "Audit logs"
 };
+
+const featureOrder = Object.keys(featureLabels);
 
 export function SubscriptionPlanStep() {
   const { data, updateSubscriptionPlan, prevStep } = useOnboardingStore();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Get all unique feature keys across all plans
-  const allFeatureKeys = Array.from(
-    new Set(subscriptionPlans.flatMap(plan => Object.keys(plan.features)))
-  );
 
   const handleComplete = async () => {
     if (!data.subscriptionPlan) {
@@ -173,12 +177,12 @@ export function SubscriptionPlanStep() {
           currency: data.company.currency,
         }),
       });
-      
+
       if (!companyRes.ok) {
         const errorData = await companyRes.json();
         throw new Error(errorData.error || "Failed to create company");
       }
-      
+
       const company = await companyRes.json();
 
       // Create branches
@@ -189,12 +193,12 @@ export function SubscriptionPlanStep() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...branch, companyId: company.id }),
         });
-        
+
         if (!branchRes.ok) {
           const errorData = await branchRes.json();
           throw new Error(errorData.error || "Failed to create branch");
         }
-        
+
         const createdBranch = await branchRes.json();
         createdBranchIds.push(createdBranch.id);
       }
@@ -202,9 +206,9 @@ export function SubscriptionPlanStep() {
       // Update existing user to associate with company
       const userRes = await fetch(`${API_BASE_URL}/users/${currentUser.id}`, {
         method: "PUT",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-          ...(typeof window !== 'undefined' && localStorage.getItem('auth_token') 
+          ...(typeof window !== 'undefined' && localStorage.getItem('auth_token')
             ? { Authorization: `Bearer ${localStorage.getItem('auth_token')}` }
             : {})
         },
@@ -248,103 +252,84 @@ export function SubscriptionPlanStep() {
         </div>
         <div>
           <h2 className="text-2xl font-bold">Choose Your Plan</h2>
-          <p className="text-muted-foreground text-sm">Select the subscription plan that fits your needs</p>
+          <p className="text-muted-foreground text-sm">Select the subscription plan that fits your needs. You can change this anytime.</p>
         </div>
       </div>
 
-      <Card>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[200px]">Features</TableHead>
-                  {subscriptionPlans.map((plan) => (
-                    <TableHead key={plan.id} className="text-center relative">
-                      <button
-                        onClick={() => updateSubscriptionPlan(plan.id)}
-                        className={`font-semibold text-lg transition-colors ${
-                          data.subscriptionPlan === plan.id 
-                            ? "text-primary" 
-                            : "text-foreground hover:text-primary"
-                        }`}
-                      >
-                        {plan.title}
-                      </button>
-                    </TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {/* Price Row */}
-                <TableRow>
-                  <TableCell className="font-medium">Price</TableCell>
-                  {subscriptionPlans.map((plan) => (
-                    <TableCell 
-                      key={plan.id} 
-                      className={`text-center ${
-                        data.subscriptionPlan === plan.id ? "bg-primary/5" : ""
-                      }`}
-                    >
-                      <div className="font-semibold text-lg">
-                        {plan.price === "Free" ? (
-                          plan.price
-                        ) : (
-                          plan.price
-                        )}
-                      </div>
-                    </TableCell>
-                  ))}
-                </TableRow>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {subscriptionPlans.map((plan) => {
+          const Icon = plan.icon;
+          const isSelected = data.subscriptionPlan === plan.id;
 
-                {/* Feature Rows */}
-                {allFeatureKeys.map((featureKey) => (
-                  <TableRow key={featureKey}>
-                    <TableCell className="font-medium">
-                      {featureLabels[featureKey] || featureKey}
-                    </TableCell>
-                    {subscriptionPlans.map((plan) => (
-                      <TableCell 
-                        key={plan.id} 
-                        className={`text-center ${
-                          data.subscriptionPlan === plan.id ? "bg-primary/5" : ""
-                        }`}
-                      >
-                        {plan.features[featureKey as keyof typeof plan.features] ? (
-                          <Check className="mx-auto h-5 w-5 text-green-500" />
-                        ) : (
-                          <X className="mx-auto h-5 w-5 text-red-500" />
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+          return (
+            <Card
+              key={plan.id}
+              onClick={() => updateSubscriptionPlan(plan.id)}
+              className={cn(
+                "relative cursor-pointer gap-4 p-5 transition-all hover:shadow-md",
+                isSelected ? "border-primary ring-primary/20 ring-2" : "hover:border-primary/40"
+              )}
+            >
+              {plan.popular && (
+                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">Most Popular</Badge>
+              )}
 
-                {/* Select Button Row */}
-                <TableRow>
-                  <TableCell></TableCell>
-                  {subscriptionPlans.map((plan) => (
-                    <TableCell 
-                      key={plan.id} 
-                      className={`text-center ${
-                        data.subscriptionPlan === plan.id ? "bg-primary/5" : ""
-                      }`}
+              <div className="space-y-3">
+                <div
+                  className={cn(
+                    "flex size-9 items-center justify-center rounded-lg",
+                    isSelected ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                  )}
+                >
+                  <Icon className="size-4.5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">{plan.title}</h3>
+                  <p className="text-muted-foreground text-xs">{plan.tagline}</p>
+                </div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-bold tracking-tight">{plan.price}</span>
+                  <span className="text-muted-foreground text-sm">{plan.period}</span>
+                </div>
+              </div>
+
+              <Button
+                type="button"
+                variant={isSelected ? "default" : "outline"}
+                className="w-full"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateSubscriptionPlan(plan.id);
+                }}
+              >
+                {isSelected ? "Selected" : `Choose ${plan.title}`}
+              </Button>
+
+              <ul className="space-y-2 border-t pt-4">
+                {featureOrder.map((key) => {
+                  const included = plan.features[key as keyof typeof plan.features];
+                  return (
+                    <li
+                      key={key}
+                      className={cn(
+                        "flex items-center gap-2 text-sm",
+                        included ? "text-foreground" : "text-muted-foreground/60"
+                      )}
                     >
-                      <Button
-                        variant={data.subscriptionPlan === plan.id ? "default" : "outline"}
-                        onClick={() => updateSubscriptionPlan(plan.id)}
-                        className="w-full"
-                      >
-                        {data.subscriptionPlan === plan.id ? "Selected" : `Choose ${plan.title}`}
-                      </Button>
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+                      {included ? (
+                        <Check className="size-4 shrink-0 text-green-600 dark:text-green-400" />
+                      ) : (
+                        <X className="size-4 shrink-0" />
+                      )}
+                      {featureLabels[key]}
+                    </li>
+                  );
+                })}
+              </ul>
+            </Card>
+          );
+        })}
+      </div>
 
       <div className="flex justify-between pt-4">
         <Button variant="outline" onClick={prevStep} disabled={isSubmitting}>
