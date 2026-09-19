@@ -5,14 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
@@ -20,6 +12,7 @@ import { Loader2Icon, MailIcon } from "lucide-react";
 import { toast } from "sonner";
 import { authApi } from "@/lib/api";
 import Link from "next/link";
+import Image from "next/image";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address")
@@ -54,56 +47,70 @@ export default function Page() {
   };
 
   return (
-    <div className="flex items-center justify-center py-4 lg:h-screen">
-      <Card className="mx-auto w-96">
-        <CardHeader>
-          <CardTitle className="text-2xl">Forgot Password</CardTitle>
-          <CardDescription>
-            Enter your email address and we&#39;ll send you instructions to reset your password.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+    <div className="flex pb-8 lg:h-screen lg:pb-0">
+      <div className="hidden w-1/2 bg-gray-100 lg:block">
+        <Image
+          width={1000}
+          height={1000}
+          src="/images/extra/image4.jpg"
+          alt="shadcn/ui login page"
+          className="h-full w-full object-cover"
+          unoptimized
+        />
+      </div>
+
+      <div className="flex w-full items-center justify-center lg:w-1/2">
+        <div className="w-full max-w-md space-y-8 px-4">
           {!isSubmitted ? (
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Label htmlFor="email" className="sr-only">
-                        Email address
-                      </Label>
-                      <FormControl>
-                        <div className="relative">
-                          <MailIcon className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform opacity-30" />
-                          <Input
-                            {...field}
-                            id="email"
-                            type="email"
-                            autoComplete="email"
-                            className="w-full pl-10"
-                            placeholder="Enter your email address"
-                            disabled={isSubmitting}
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    <>
-                      <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    "Send Reset Instructions"
-                  )}
-                </Button>
-              </form>
-            </Form>
+            <>
+              <div className="text-center">
+                <h2 className="mt-6 text-3xl font-bold">Forgot password?</h2>
+                <p className="text-muted-foreground mt-2 text-sm">
+                  Enter your email address and we&#39;ll send you instructions to reset your password.
+                </p>
+              </div>
+
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <Label htmlFor="email" className="sr-only">
+                          Email address
+                        </Label>
+                        <FormControl>
+                          <div className="relative">
+                            <MailIcon className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform opacity-30" />
+                            <Input
+                              {...field}
+                              id="email"
+                              type="email"
+                              autoComplete="email"
+                              className="w-full pl-10"
+                              placeholder="Enter your email address"
+                              disabled={isSubmitting}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? (
+                      <>
+                        <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      "Send Reset Instructions"
+                    )}
+                  </Button>
+                </form>
+              </Form>
+            </>
           ) : (
             <div className="space-y-4 text-center">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
@@ -127,16 +134,15 @@ export default function Page() {
               </Button>
             </div>
           )}
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <p className="text-sm">
+
+          <div className="text-center text-sm">
             Remember your password?{" "}
             <Link href="/login/v1" className="underline">
               Log in
             </Link>
-          </p>
-        </CardFooter>
-      </Card>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

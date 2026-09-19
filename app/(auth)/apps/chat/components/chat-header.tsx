@@ -58,7 +58,7 @@ export function ChatHeader({ user, chatName }: ChatHeaderProps) {
           </Button>
           {isGroupChat ? (
             <>
-              <Avatar className="overflow-visible lg:size-10">
+              <Avatar className="overflow-visible md:size-10">
                 <AvatarFallback>{generateAvatarFallback(chatName || "Group")}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col gap-1">
@@ -68,7 +68,7 @@ export function ChatHeader({ user, chatName }: ChatHeaderProps) {
             </>
           ) : (
             <>
-              <Avatar className="overflow-visible lg:size-10">
+              <Avatar className="overflow-visible md:size-10">
                 <AvatarImage src={`${user?.avatar}`} alt="avatar image" />
                 <AvatarIndicator variant={user?.online_status} />
                 <AvatarFallback>{generateAvatarFallback(user?.name || "")}</AvatarFallback>

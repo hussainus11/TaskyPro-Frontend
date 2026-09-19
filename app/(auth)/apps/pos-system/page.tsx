@@ -6,8 +6,8 @@ import { generateMeta } from "@/lib/utils";
 import PosSystemMenu from "@/app/(auth)/apps/pos-system/pos-system-menu";
 import { productApi, productCategoryApi, orderApi, API_BASE_URL, companiesApi } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth";
-import { Loader2 } from "lucide-react";
 import { useStore } from "./store";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -149,8 +149,33 @@ export default function Page() {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      <div className="grid grid-cols-8 gap-4 lg:grid">
+        <div className="col-span-8 space-y-4 lg:col-span-6">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-9 w-full max-w-sm" />
+          </div>
+          <div className="flex gap-2">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={`cat-${i}`} className="h-9 w-20 shrink-0 rounded-full" />
+            ))}
+          </div>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={`product-${i}`} className="space-y-2 rounded-lg border p-3">
+                <Skeleton className="aspect-square w-full rounded-md" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="col-span-8 space-y-3 rounded-lg border p-4 lg:col-span-2">
+          <Skeleton className="h-6 w-24" />
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={`cart-${i}`} className="h-14 w-full" />
+          ))}
+          <Skeleton className="mt-4 h-10 w-full" />
+        </div>
       </div>
     );
   }

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/layout/page-header";
 import { CustomersTable } from "./customers-table";
 
 export default function CustomersPage() {
@@ -19,18 +20,16 @@ export default function CustomersPage() {
 
   return (
     <div className="container mx-auto py-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
-          <p className="text-muted-foreground">
-            Manage your customers and their information
-          </p>
-        </div>
-        <Button onClick={handleCreateClick}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Customer
-        </Button>
-      </div>
+      <PageHeader
+        title="Customers"
+        description="Manage your customers and their information"
+        actions={
+          <Button onClick={handleCreateClick}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Customer
+          </Button>
+        }
+      />
 
       <CustomersTable key={refreshKey} onRefresh={handleRefresh} onCreateClickRef={createDialogTriggerRef} />
     </div>

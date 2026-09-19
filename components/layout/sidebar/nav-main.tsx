@@ -855,7 +855,7 @@ export function NavMain() {
         >
           <SidebarMenuSubItem>
             <SidebarMenuSubButton
-              className="hover:text-foreground active:text-foreground hover:bg-[var(--primary)]/10 active:bg-[var(--primary)]/10 [&>a>svg:not(.grip-icon)]:opacity-100 [&>a>svg:not(.grip-icon)]:text-sidebar-foreground data-[active=true]:[&>a>svg:not(.grip-icon)]:text-sidebar-accent-foreground relative"
+              className="hover:text-foreground active:text-foreground hover:bg-[var(--primary)]/10 active:bg-[var(--primary)]/10 relative"
               isActive={pathname === item.href}
               asChild
               suppressHydrationWarning>
@@ -875,7 +875,7 @@ export function NavMain() {
                   {...listeners}
                   onClick={(e) => e.stopPropagation()}
                   suppressHydrationWarning
-                  className={`grip-icon h-3.5 w-3.5 cursor-grab active:cursor-grabbing text-muted-foreground shrink-0 opacity-0 group-hover/subitem:opacity-100 transition-opacity duration-150 group-data-[collapsible=icon]:hidden ${isDragging ? '!opacity-100' : ''}`}
+                  className={`grip-icon h-3.5 w-3.5 cursor-grab active:cursor-grabbing text-current shrink-0 opacity-0 group-hover/subitem:opacity-100 transition-opacity duration-150 group-data-[collapsible=icon]:hidden ${isDragging ? '!opacity-100' : ''}`}
                 />
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>
@@ -908,7 +908,7 @@ export function NavMain() {
                         {...listeners}
                         onClick={(e) => e.stopPropagation()}
                         suppressHydrationWarning
-                        className={`h-3.5 w-3.5 cursor-grab active:cursor-grabbing text-muted-foreground shrink-0 opacity-0 group-hover/menuitem:opacity-100 transition-opacity duration-150 group-data-[collapsible=icon]:hidden ${isDragging ? '!opacity-100' : ''}`}
+                        className={`h-3.5 w-3.5 cursor-grab active:cursor-grabbing text-current shrink-0 opacity-0 group-hover/menuitem:opacity-100 transition-opacity duration-150 group-data-[collapsible=icon]:hidden ${isDragging ? '!opacity-100' : ''}`}
                       />
                       {item.icon && <item.icon />}
                       <span>{item.title}</span>
@@ -969,7 +969,7 @@ export function NavMain() {
                       {...listeners}
                       onClick={(e) => e.stopPropagation()}
                       suppressHydrationWarning
-                      className={`grip-icon h-3.5 w-3.5 cursor-grab active:cursor-grabbing text-muted-foreground shrink-0 opacity-0 group-hover/menuitem:opacity-100 transition-opacity duration-150 group-data-[collapsible=icon]:hidden ${isDragging ? "!opacity-100" : ""}`}
+                      className={`grip-icon h-3.5 w-3.5 cursor-grab active:cursor-grabbing text-current shrink-0 opacity-0 group-hover/menuitem:opacity-100 transition-opacity duration-150 group-data-[collapsible=icon]:hidden ${isDragging ? "!opacity-100" : ""}`}
                     />
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
@@ -1010,7 +1010,7 @@ export function NavMain() {
                   {...listeners}
                   onClick={(e) => e.stopPropagation()}
                   suppressHydrationWarning
-                  className={`h-3.5 w-3.5 cursor-grab active:cursor-grabbing text-muted-foreground shrink-0 opacity-0 group-hover/menuitem:opacity-100 transition-opacity duration-150 group-data-[collapsible=icon]:hidden ${isDragging ? '!opacity-100' : ''}`}
+                  className={`h-3.5 w-3.5 cursor-grab active:cursor-grabbing text-current shrink-0 opacity-0 group-hover/menuitem:opacity-100 transition-opacity duration-150 group-data-[collapsible=icon]:hidden ${isDragging ? '!opacity-100' : ''}`}
                 />
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>

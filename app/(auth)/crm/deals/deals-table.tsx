@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { ChevronDownIcon, ChevronsUpDown, Ellipsis } from "lucide-react";
+import { ChevronDownIcon, ChevronsUpDown, Ellipsis, HandCoins } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -48,6 +48,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from "@/components/ui/alert-dialog";
+import { TableSkeletonRows, TableEmptyRow } from "@/components/ui/custom/table-states";
+import { StatusBadge } from "@/components/ui/custom/status-badge";
 
 export type Deal = {
   id: string;
@@ -339,7 +341,11 @@ export function DealsTable({ deals: propDeals, loading: propLoading = false, onR
             if (field.type === "checkbox" || field.type === "toggle") {
               return value ? "Yes" : "No";
             }
-            
+
+            if (field.type === "select" || field.type === "radio") {
+              return <StatusBadge value={String(value)} />;
+            }
+
             if (typeof value === "object" && value !== null) {
               return JSON.stringify(value);
             }
@@ -532,11 +538,7 @@ export function DealsTable({ deals: propDeals, loading: propLoading = false, onR
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  Loading...
-                </TableCell>
-              </TableRow>
+              <TableSkeletonRows columnCount={columns.length} />
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -554,11 +556,12 @@ export function DealsTable({ deals: propDeals, loading: propLoading = false, onR
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No deals found.
-                </TableCell>
-              </TableRow>
+              <TableEmptyRow
+                colSpan={columns.length}
+                icon={<HandCoins />}
+                title="No deals found"
+                description="Deals you add will show up here."
+              />
             )}
           </TableBody>
         </Table>

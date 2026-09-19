@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { ChevronDownIcon, ChevronsUpDown, Ellipsis } from "lucide-react";
+import { ChevronDownIcon, ChevronsUpDown, Ellipsis, ListTodo } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -48,6 +48,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from "@/components/ui/alert-dialog";
+import { TableSkeletonRows, TableEmptyRow } from "@/components/ui/custom/table-states";
+import { StatusBadge } from "@/components/ui/custom/status-badge";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export type Task = {
   id: string;
@@ -343,11 +346,15 @@ export function TasksTable({ tasks: propTasks, loading: propLoading = false, onR
             if (field.type === "checkbox" || field.type === "toggle") {
               return value ? "Yes" : "No";
             }
-            
+
+            if (field.type === "select" || field.type === "radio") {
+              return <StatusBadge value={String(value)} />;
+            }
+
             if (typeof value === "object" && value !== null) {
               return JSON.stringify(value);
             }
-            
+
             return String(value);
           }
         });
@@ -365,7 +372,10 @@ export function TasksTable({ tasks: propTasks, loading: propLoading = false, onR
           id: "status",
           accessorKey: "status",
           header: "Status",
-          cell: ({ row }) => <div>{row.getValue("status") || "-"}</div>
+          cell: ({ row }) => {
+            const value = row.getValue("status") as string | undefined;
+            return value ? <StatusBadge value={value} /> : <span className="text-muted-foreground">-</span>;
+          }
         }
       );
     }
@@ -451,8 +461,18 @@ export function TasksTable({ tasks: propTasks, loading: propLoading = false, onR
 
   if (loadingTemplate) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-muted-foreground">Loading table configuration...</div>
+      <div className="w-full space-y-4">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-9 w-full max-w-sm" />
+          <Skeleton className="ml-auto h-9 w-24" />
+        </div>
+        <div className="rounded-md border">
+          <Table>
+            <TableBody>
+              <TableSkeletonRows columnCount={5} />
+            </TableBody>
+          </Table>
+        </div>
       </div>
     );
   }
@@ -516,11 +536,7 @@ export function TasksTable({ tasks: propTasks, loading: propLoading = false, onR
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  Loading...
-                </TableCell>
-              </TableRow>
+              <TableSkeletonRows columnCount={columns.length} />
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -538,11 +554,12 @@ export function TasksTable({ tasks: propTasks, loading: propLoading = false, onR
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No tasks found.
-                </TableCell>
-              </TableRow>
+              <TableEmptyRow
+                colSpan={columns.length}
+                icon={<ListTodo />}
+                title="No tasks found"
+                description="Tasks you add will show up here."
+              />
             )}
           </TableBody>
         </Table>

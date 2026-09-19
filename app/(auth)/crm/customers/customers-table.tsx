@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { ChevronDownIcon, ChevronsUpDown, Ellipsis, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { ChevronDownIcon, ChevronsUpDown, Ellipsis, MoreHorizontal, Pencil, Trash2, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -50,6 +50,9 @@ import {
   AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import { format } from "date-fns";
+import { TableSkeletonRows, TableEmptyRow } from "@/components/ui/custom/table-states";
+import { StatusBadge } from "@/components/ui/custom/status-badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export type Customer = {
   id: number;
@@ -314,15 +317,36 @@ export function CustomersTable({
             if (field.type === "multiselect" && Array.isArray(value)) {
               return value.length > 0 ? value.join(", ") : <span className="text-muted-foreground">-</span>;
             }
-            
+
             if (field.type === "checkbox" || field.type === "toggle") {
               return value ? "Yes" : "No";
             }
-            
+
+            if (field.type === "select" || field.type === "radio") {
+              return <StatusBadge value={String(value)} />;
+            }
+
             if (typeof value === "object" && value !== null) {
               return JSON.stringify(value);
             }
-            
+
+            if (field === templateFields[0]) {
+              const initials = String(value)
+                .trim()
+                .split(/\s+/)
+                .slice(0, 2)
+                .map((part) => part[0]?.toUpperCase())
+                .join("");
+              return (
+                <div className="flex items-center gap-2">
+                  <Avatar className="size-7">
+                    <AvatarFallback className="text-xs">{initials || <Building2 className="size-3.5" />}</AvatarFallback>
+                  </Avatar>
+                  <span className="font-medium">{String(value)}</span>
+                </div>
+              );
+            }
+
             return String(value);
           }
         });
@@ -495,11 +519,7 @@ export function CustomersTable({
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  Loading customers...
-                </TableCell>
-              </TableRow>
+              <TableSkeletonRows columnCount={columns.length} />
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
@@ -511,11 +531,12 @@ export function CustomersTable({
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No customers found.
-                </TableCell>
-              </TableRow>
+              <TableEmptyRow
+                colSpan={columns.length}
+                icon={<Building2 />}
+                title="No customers found"
+                description="Customers you add will show up here."
+              />
             )}
           </TableBody>
         </Table>

@@ -6,14 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
@@ -21,6 +13,7 @@ import { Loader2Icon, Eye, EyeOff, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { authApi } from "@/lib/api";
 import Link from "next/link";
+import Image from "next/image";
 
 const formSchema = z.object({
   newPassword: z.string().min(6, "Password must be at least 6 characters"),
@@ -83,31 +76,49 @@ export default function ResetPasswordPage() {
 
   if (!token) {
     return (
-      <div className="flex items-center justify-center py-4 lg:h-screen">
-        <Card className="mx-auto w-96">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <Loader2Icon className="mx-auto h-8 w-8 animate-spin text-muted-foreground" />
-              <p className="mt-4 text-sm text-muted-foreground">Validating reset token...</p>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="flex pb-8 lg:h-screen lg:pb-0">
+        <div className="hidden w-1/2 bg-gray-100 lg:block">
+          <Image
+            width={1000}
+            height={1000}
+            src="/images/extra/image4.jpg"
+            alt="shadcn/ui login page"
+            className="h-full w-full object-cover"
+            unoptimized
+          />
+        </div>
+        <div className="flex w-full items-center justify-center lg:w-1/2">
+          <div className="text-center">
+            <Loader2Icon className="mx-auto h-8 w-8 animate-spin text-muted-foreground" />
+            <p className="mt-4 text-sm text-muted-foreground">Validating reset token...</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-center py-4 lg:h-screen">
-      <Card className="mx-auto w-96">
-        <CardHeader>
-          <CardTitle className="text-2xl">Reset Password</CardTitle>
-          <CardDescription>
-            Enter your new password below.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+    <div className="flex pb-8 lg:h-screen lg:pb-0">
+      <div className="hidden w-1/2 bg-gray-100 lg:block">
+        <Image
+          width={1000}
+          height={1000}
+          src="/images/extra/image4.jpg"
+          alt="shadcn/ui login page"
+          className="h-full w-full object-cover"
+          unoptimized
+        />
+      </div>
+
+      <div className="flex w-full items-center justify-center lg:w-1/2">
+        <div className="w-full max-w-md space-y-8 px-4">
+          <div className="text-center">
+            <h2 className="mt-6 text-3xl font-bold">Reset password</h2>
+            <p className="text-muted-foreground mt-2 text-sm">Enter your new password below.</p>
+          </div>
+
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
               <FormField
                 control={form.control}
                 name="newPassword"
@@ -196,16 +207,15 @@ export default function ResetPasswordPage() {
               </Button>
             </form>
           </Form>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <p className="text-sm">
+
+          <div className="text-center text-sm">
             Remember your password?{" "}
             <Link href="/login/v1" className="underline">
               Log in
             </Link>
-          </p>
-        </CardFooter>
-      </Card>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

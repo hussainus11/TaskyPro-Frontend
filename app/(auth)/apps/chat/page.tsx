@@ -9,6 +9,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { toast } from "sonner";
 import useChatStore from "@/app/(auth)/apps/chat/useChatStore";
 import { io, Socket } from "socket.io-client";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 //const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
@@ -180,10 +182,26 @@ export default function Page() {
 
   if (loading) {
     return (
-      <div className="flex h-[calc(100vh-var(--header-height)-3rem)] w-full items-center justify-center">
-        <div className="text-center">
-          <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto" />
-          <p className="text-muted-foreground">Loading chats...</p>
+      <div className="flex h-[calc(100vh-var(--header-height)-3rem)] w-full gap-4">
+        <Card className="w-full pb-0 lg:w-96">
+          <CardHeader>
+            <Skeleton className="h-7 w-20" />
+            <Skeleton className="mt-4 h-9 w-full" />
+          </CardHeader>
+          <CardContent className="flex-1 space-y-4 p-0">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-4 px-6">
+                <Skeleton className="size-10 shrink-0 rounded-full" />
+                <div className="min-w-0 grow space-y-2">
+                  <Skeleton className="h-4 w-1/2" />
+                  <Skeleton className="h-3 w-3/4" />
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+        <div className="hidden grow items-center justify-center rounded-lg border lg:flex">
+          <Skeleton className="size-16 rounded-full" />
         </div>
       </div>
     );

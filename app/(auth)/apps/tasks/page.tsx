@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { TemplateViewerDialog } from "@/app/(auth)/pages/form-builder/template-viewer-dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { PageHeader } from "@/components/layout/page-header";
 
 export default function TaskPage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -69,27 +70,25 @@ export default function TaskPage() {
   };
 
   return (
-    <>
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Tasks</h1>
-          <p className="text-muted-foreground">
-            Manage your tasks and track progress
-          </p>
-        </div>
-        <Button 
-          onClick={() => {
-            if (!taskTemplateId) {
-              toast.error("No active Task template found. Please create a Task template first.");
-              return;
-            }
-            setIsAddDialogOpen(true);
-          }}
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add Task
-        </Button>
-      </div>
+    <div className="space-y-4">
+      <PageHeader
+        title="Tasks"
+        description="Manage your tasks and track progress"
+        actions={
+          <Button
+            onClick={() => {
+              if (!taskTemplateId) {
+                toast.error("No active Task template found. Please create a Task template first.");
+                return;
+              }
+              setIsAddDialogOpen(true);
+            }}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add Task
+          </Button>
+        }
+      />
 
       <TasksTable key={refreshKey} onRefresh={handleRefresh} />
 
@@ -108,6 +107,6 @@ export default function TaskPage() {
           submitLabel="Create Task"
         />
       )}
-    </>
+    </div>
   );
 }

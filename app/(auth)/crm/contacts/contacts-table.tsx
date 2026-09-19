@@ -48,6 +48,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from "@/components/ui/alert-dialog";
+import { TableSkeletonRows, TableEmptyRow } from "@/components/ui/custom/table-states";
+import { StatusBadge } from "@/components/ui/custom/status-badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Users } from "lucide-react";
 
 export type Contact = {
   id: string;
@@ -401,15 +406,36 @@ export function ContactsTable({ contacts: propContacts, loading: propLoading = f
             if (field.type === "multiselect" && Array.isArray(value)) {
               return value.length > 0 ? value.join(", ") : <span className="text-muted-foreground">-</span>;
             }
-            
+
             if (field.type === "checkbox" || field.type === "toggle") {
               return value ? "Yes" : "No";
             }
-            
+
+            if (field.type === "select" || field.type === "radio") {
+              return <StatusBadge value={String(value)} />;
+            }
+
             if (typeof value === "object" && value !== null) {
               return JSON.stringify(value);
             }
-            
+
+            if (field === templateFields[0]) {
+              const initials = String(value)
+                .trim()
+                .split(/\s+/)
+                .slice(0, 2)
+                .map((part) => part[0]?.toUpperCase())
+                .join("");
+              return (
+                <div className="flex items-center gap-2">
+                  <Avatar className="size-7">
+                    <AvatarFallback className="text-xs">{initials || <Users className="size-3.5" />}</AvatarFallback>
+                  </Avatar>
+                  <span className="font-medium">{String(value)}</span>
+                </div>
+              );
+            }
+
             return String(value);
           }
         });
@@ -519,8 +545,18 @@ export function ContactsTable({ contacts: propContacts, loading: propLoading = f
 
   if (loadingTemplate) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-muted-foreground">Loading table configuration...</div>
+      <div className="w-full space-y-4">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-9 w-full max-w-sm" />
+          <Skeleton className="ml-auto h-9 w-24" />
+        </div>
+        <div className="rounded-md border">
+          <Table>
+            <TableBody>
+              <TableSkeletonRows columnCount={5} />
+            </TableBody>
+          </Table>
+        </div>
       </div>
     );
   }
@@ -584,11 +620,7 @@ export function ContactsTable({ contacts: propContacts, loading: propLoading = f
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  Loading...
-                </TableCell>
-              </TableRow>
+              <TableSkeletonRows columnCount={columns.length} />
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -606,11 +638,12 @@ export function ContactsTable({ contacts: propContacts, loading: propLoading = f
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No contacts found.
-                </TableCell>
-              </TableRow>
+              <TableEmptyRow
+                colSpan={columns.length}
+                icon={<Users />}
+                title="No contacts found"
+                description="Contacts you add will show up here."
+              />
             )}
           </TableBody>
         </Table>

@@ -16,6 +16,8 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { ActionDropdown } from "@/app/(auth)/apps/chat/components/action-dropdown";
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/components/ui/empty";
+import { MessagesSquare } from "lucide-react";
 
 export function ChatSidebar({ chats, onRefresh }: { chats: ChatItemProps[]; onRefresh?: () => void }) {
   const { selectedChat } = useChatStore();
@@ -73,7 +75,17 @@ export function ChatSidebar({ chats, onRefresh }: { chats: ChatItemProps[]; onRe
               />
             ))
           ) : (
-            <div className="text-muted-foreground mt-4 text-center text-sm">No chat found</div>
+            <Empty className="border-0 p-6">
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <MessagesSquare />
+                </EmptyMedia>
+                <EmptyTitle>No chats found</EmptyTitle>
+                <EmptyDescription>
+                  {searchQuery ? "Try a different search term." : "Start a new conversation to get going."}
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           )}
         </div>
       </CardContent>
