@@ -206,16 +206,9 @@ export default function Page() {
       // Calculate next payment date (1 month from now for paid plans)
       const newNextPaymentDate = newPlan === "Basic" ? null : addMonths(new Date(), 1);
 
-      await settingsApi.updateBilling(user.id, {
-        billingPlan: newPlan,
-        nextPaymentDate: newNextPaymentDate ?? undefined
-      });
-
-      setBillingPlan(newPlan);
-      setNextPaymentDate(newNextPaymentDate);
-      
-      // Create a transaction record
+      // Create a transaction record for paid plans and persist it alongside the plan change
       const plan = billingPlans.find(p => p.id === newPlan);
+      let updatedTransactions = transactions;
       if (plan && plan.monthlyPrice > 0) {
         const newTransaction: Transaction = {
           id: `#${Date.now()}`,
@@ -224,8 +217,18 @@ export default function Page() {
           date: format(new Date(), "MM/dd/yyyy"),
           amount: `$${plan.monthlyPrice.toFixed(2)}`
         };
-        setTransactions(prev => [newTransaction, ...prev]);
+        updatedTransactions = [newTransaction, ...transactions];
       }
+
+      await settingsApi.updateBilling(user.id, {
+        billingPlan: newPlan,
+        nextPaymentDate: newNextPaymentDate ?? undefined,
+        transactions: updatedTransactions
+      });
+
+      setBillingPlan(newPlan);
+      setNextPaymentDate(newNextPaymentDate);
+      setTransactions(updatedTransactions);
 
       toast.success(`Successfully changed plan to ${newPlan}`);
     } catch (error: any) {

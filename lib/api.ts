@@ -2334,6 +2334,7 @@ export const settingsApi = {
     billingPlan?: string;
     nextPaymentDate?: string | Date;
     paymentMethods?: any;
+    transactions?: any;
   }) => apiRequest(`/settings/${userId}/billing`, {
     method: 'PUT',
     body: JSON.stringify(data),

@@ -44,6 +44,26 @@ const appearanceFormSchema = z.object({
 
 type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
 
+// "system" clears the override so the page falls back to the app's default
+// (Geist, self-hosted - see app/layout.tsx). The other two stay generic
+// (no external font files) so switching never risks a production build
+// failure - see lib/fonts.ts for the same constraint.
+const FONT_FAMILY_MAP: Record<string, string | null> = {
+  inter: "var(--font-inter), ui-sans-serif, sans-serif",
+  manrope: "ui-sans-serif, system-ui, sans-serif",
+  system: null
+};
+
+function applyFont(font: string) {
+  if (typeof document === "undefined") return;
+  const value = FONT_FAMILY_MAP[font];
+  if (value) {
+    document.body.style.setProperty("--text-family", value);
+  } else {
+    document.body.style.removeProperty("--text-family");
+  }
+}
+
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const { theme, setTheme } = useTheme();
@@ -77,14 +97,17 @@ export default function Page() {
           "System": "system"
         };
         
+        const resolvedFont = fontMap[fontValue] || "system";
+
         form.reset({
           theme: themeValue as "light" | "dark",
-          font: fontMap[fontValue] || "system"
+          font: resolvedFont
         });
-        
+
         if (themeValue !== theme) {
           setTheme(themeValue);
         }
+        applyFont(resolvedFont);
       } catch (error: any) {
         console.error('Failed to load settings:', error);
       } finally {
@@ -109,6 +132,7 @@ export default function Page() {
       });
 
       setTheme(data.theme);
+      applyFont(data.font);
       toast.success("Appearance settings updated successfully");
     } catch (error: any) {
       console.error('Failed to update appearance settings:', error);
@@ -127,7 +151,12 @@ export default function Page() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Font</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      applyFont(value);
+                    }}
+                    defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select font" />
