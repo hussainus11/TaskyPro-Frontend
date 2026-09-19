@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/sidebar";
 import { NavMain } from "@/components/layout/sidebar/nav-main";
 import { NavUser } from "@/components/layout/sidebar/nav-user";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import Logo from "@/components/layout/logo";
 import {
   DropdownMenu,
@@ -64,9 +63,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <ScrollArea className="h-full">
-          <NavMain />
-        </ScrollArea>
+        <NavMain />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

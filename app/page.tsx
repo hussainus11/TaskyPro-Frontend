@@ -12,10 +12,10 @@ export default function HomePage() {
     
     if (token) {
       // Redirect to dashboard if logged in
-      router.push("/dashboard/default");
+      router.push("/crm");
     } else {
       // Redirect to login if not logged in
-      router.push("/dashboard/login/v1");
+      router.push("/login/v1");
     }
   }, [router]);
 

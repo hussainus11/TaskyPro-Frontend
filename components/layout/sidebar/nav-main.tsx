@@ -122,8 +122,8 @@ type NavGroup = {
 // Hide items/sections from the sidebar (even if present in DB menus)
 const HIDDEN_GROUP_TITLES = new Set<string>(["AI Apps"]);
 const HIDDEN_ITEM_HREFS = new Set<string>([
-  "/dashboard/apps/api-keys",
-  "/dashboard/pages/user-profile",
+  "/apps/api-keys",
+  "/pages/user-profile",
 ]);
 const HIDDEN_ITEM_TITLES = new Set<string>(["Api Keys", "Profile V2"]);
 
@@ -275,60 +275,55 @@ export const defaultNavItems: NavGroup[] = [
     title: "Dashboards",
     items: [
       {
-        title: "Default",
-        href: "/dashboard/default",
-        icon: ChartPieIcon
-      },
-      {
         title: "Collaboration",
         href: "#",
         icon: UsersIcon,
         items: [
           {
             title: "Messenger",
-            href: "/dashboard/apps/chat",
+            href: "/apps/chat",
             icon: MessageSquareIcon
           },
           {
             title: "Feed",
-            href: "/dashboard/collaboration/feed",
+            href: "/collaboration/feed",
             icon: FolderDotIcon
           },
           {
             title: "Collabs",
-            href: "/dashboard/collaboration/collabs",
+            href: "/collaboration/collabs",
             icon: ClipboardMinusIcon
           },
           {
             title: "Online Documents",
-            href: "/dashboard/collaboration/documents",
+            href: "/collaboration/documents",
             icon: ComponentIcon
           },
           {
             title:"File Manager",
-            href: "/dashboard/file-manager",
+            href: "/file-manager",
             icon: FolderIcon,
             items: [
               {
                 title: "Dashboard",
-                href: "/dashboard/file-manager",
+                href: "/file-manager",
                 icon: FolderIcon,
               },
               {
                 title: "File Manager",
-                href: "/dashboard/apps/file-manager",
+                href: "/apps/file-manager",
                 icon: ArchiveRestoreIcon,
               },
             ]
           },
           {
             title:"Work Groups",
-            href:"/dashboard/collaboration/work-groups",
+            href:"/collaboration/work-groups",
             icon: GroupIcon
           },
           {
             title:"Boards",
-            href:"/dashboard/collaboration/boards",
+            href:"/collaboration/boards",
             icon: LayoutDashboardIcon
           }
         ]
@@ -338,79 +333,79 @@ export const defaultNavItems: NavGroup[] = [
         href: "#",
         icon: ShoppingBagIcon,
         items: [
-          { title: "Dashboard", href: "/dashboard/ecommerce", icon: ChartPieIcon },
-          { title: "Product List", href: "/dashboard/pages/products", icon: Package },
-          { title: "Add Product", href: "/dashboard/pages/products/create", icon: Plus },
-          { title: "Customers", href: "/dashboard/crm/customers", icon: UsersIcon },
-          { title: "Order List", href: "/dashboard/pages/orders", icon: ShoppingCart },
-          { title: "Order Detail", href: "/dashboard/pages/orders/detail", icon: FileText },
-          { title: "Returns", href: "/dashboard/pages/returns", icon: RotateCcw }
+          { title: "Dashboard", href: "/ecommerce", icon: ChartPieIcon },
+          { title: "Product List", href: "/pages/products", icon: Package },
+          { title: "Add Product", href: "/pages/products/create", icon: Plus },
+          { title: "Customers", href: "/crm/customers", icon: UsersIcon },
+          { title: "Order List", href: "/pages/orders", icon: ShoppingCart },
+          { title: "Order Detail", href: "/pages/orders/detail", icon: FileText },
+          { title: "Returns", href: "/pages/returns", icon: RotateCcw }
         ]
       },
-      { title: "Sales", href: "/dashboard/sales", icon: BadgeDollarSignIcon },
+      { title: "Sales", href: "/sales", icon: BadgeDollarSignIcon },
       { 
         title: "CRM", 
         href: "#", 
         icon: ChartBarDecreasingIcon,
         items: [
-          { title: "Dashboard", href: "/dashboard/crm", icon: ChartPieIcon },
-          { title: "Leads", href: "/dashboard/crm/leads", icon: UserIcon },
-          { title: "Contacts", href: "/dashboard/crm/contacts", icon: UsersIcon },
-          { title: "Deals", href: "/dashboard/crm/deals", icon: BadgeDollarSignIcon },
-          { title: "Form Builder", href: "/dashboard/pages/form-builder", icon: ComponentIcon },
-          { title: "Settings", href: "/dashboard/crm/settings", icon: SettingsIcon },
+          { title: "Dashboard", href: "/crm", icon: ChartPieIcon },
+          { title: "Leads", href: "/crm/leads", icon: UserIcon },
+          { title: "Contacts", href: "/crm/contacts", icon: UsersIcon },
+          { title: "Deals", href: "/crm/deals", icon: BadgeDollarSignIcon },
+          { title: "Form Builder", href: "/pages/form-builder", icon: ComponentIcon },
+          { title: "Settings", href: "/crm/settings", icon: SettingsIcon },
         ]
       },
       // {
       //   title: "Website Analytics",
-      //   href: "/dashboard/website-analytics",
+      //   href: "/website-analytics",
       //   icon: GaugeIcon
       // },
       {
         title: "Project Management",
-        href: "/dashboard/project-management",
+        href: "/project-management",
         icon: FolderDotIcon,
         items: [
-          { title: "Dashboard", href: "/dashboard/project-management", icon: LayoutDashboardIcon },
-          { title: "Project List", href: "/dashboard/project-list", icon: List },
+          { title: "Dashboard", href: "/project-management", icon: LayoutDashboardIcon },
+          { title: "Project List", href: "/project-list", icon: List },
           {
             title: "Tasks",
-            href: "/dashboard/apps/tasks",
+            href: "/apps/tasks",
             icon: ClipboardCheckIcon
           },
         ]
       },
       // {
       //   title: "File Manager",
-      //   href: "/dashboard/file-manager",
+      //   href: "/file-manager",
       //   icon: FolderIcon
       // },
-      // { title: "Crypto", href: "/dashboard/crypto", icon: WalletMinimalIcon },
-      // { title: "Academy/School", href: "/dashboard/academy", icon: GraduationCapIcon },
-      // { title: "Hospital Management", href: "/dashboard/hospital-management", icon: ActivityIcon },
+      // { title: "Crypto", href: "/crypto", icon: WalletMinimalIcon },
+      // { title: "Academy/School", href: "/academy", icon: GraduationCapIcon },
+      // { title: "Hospital Management", href: "/hospital-management", icon: ActivityIcon },
       // {
       //   title: "Hotel Dashboard",
-      //   href: "/dashboard/hotel",
+      //   href: "/hotel",
       //   icon: Building2Icon,
       //   items: [
-      //     { title: "Dashboard", href: "/dashboard/hotel" },
-      //     { title: "Bookings", href: "/dashboard/hotel/bookings" }
+      //     { title: "Dashboard", href: "/hotel" },
+      //     { title: "Bookings", href: "/hotel/bookings" }
       //   ]
       // },
       // {
       //   title: "Finance Dashboard",
-      //   href: "/dashboard/finance",
+      //   href: "/finance",
       //   icon: WalletMinimalIcon
       // },
       {
         title: "Payment Dashboard",
-        href: "/dashboard/payment",
+        href: "/payment",
         icon: CreditCardIcon,
         items: [
-          { title: "Dashboard", href: "/dashboard/payment", icon: LayoutDashboardIcon },
-          { title: "Transactions", href: "/dashboard/payment/transactions", icon: WalletMinimalIcon },
-          { title: "Customer Payments", href: "/dashboard/payment/customer-payments", icon: UserIcon },
-          { title: "Supplier Payments", href: "/dashboard/payment/supplier-payments", icon: UsersIcon }
+          { title: "Dashboard", href: "/payment", icon: LayoutDashboardIcon },
+          { title: "Transactions", href: "/payment/transactions", icon: WalletMinimalIcon },
+          { title: "Customer Payments", href: "/payment/customer-payments", icon: UserIcon },
+          { title: "Supplier Payments", href: "/payment/supplier-payments", icon: UsersIcon }
         ]
       }
     ]
@@ -420,62 +415,62 @@ export const defaultNavItems: NavGroup[] = [
     items: [
       {
         title: "Users",
-        href: "/dashboard/pages/users",
+        href: "/pages/users",
         icon: UsersIcon
       },
       {
         title: "Companies",
-        href: "/dashboard/pages/companies",
+        href: "/pages/companies",
         icon: Building2Icon
       },
       {
         title: "Automation",
-        href: "/dashboard/pages/business-processes",
+        href: "/pages/business-processes",
         icon: Workflow
       },
-      { title: "Notes", href: "/dashboard/apps/notes", icon: StickyNoteIcon, isDataBadge: "8" },
-      // { title: "Chats", href: "/dashboard/apps/chat", icon: MessageSquareIcon, isDataBadge: "5" },
-      { title: "Mail", href: "/dashboard/apps/mail", icon: MailIcon },
+      { title: "Notes", href: "/apps/notes", icon: StickyNoteIcon, isDataBadge: "8" },
+      // { title: "Chats", href: "/apps/chat", icon: MessageSquareIcon, isDataBadge: "5" },
+      { title: "Mail", href: "/apps/mail", icon: MailIcon },
       {
         title: "Todo List App",
-        href: "/dashboard/apps/todo-list-app",
+        href: "/apps/todo-list-app",
         icon: SquareCheckIcon
       },
       // {
       //   title: "Tasks",
-      //   href: "/dashboard/apps/tasks",
+      //   href: "/apps/tasks",
       //   icon: ClipboardCheckIcon
       // },
-      { title: "Calendar", href: "/dashboard/apps/calendar", icon: CalendarIcon },
+      { title: "Calendar", href: "/apps/calendar", icon: CalendarIcon },
       // {
       //   title: "File Manager",
-      //   href: "/dashboard/apps/file-manager",
+      //   href: "/apps/file-manager",
       //   icon: ArchiveRestoreIcon,
       //   isNew: true
       // },
-      { title: "Api Keys", href: "/dashboard/apps/api-keys", icon: KeyIcon },
-      { title: "POS App", href: "/dashboard/apps/pos-system", icon: CookieIcon },
-      //{ title: "Courses", href: "/dashboard/apps/courses", icon: BookAIcon, isComing: true }
+      { title: "Api Keys", href: "/apps/api-keys", icon: KeyIcon },
+      { title: "POS App", href: "/apps/pos-system", icon: CookieIcon },
+      //{ title: "Courses", href: "/apps/courses", icon: BookAIcon, isComing: true }
     ]
   },
   {
     title: "AI Apps",
     items: [
-      { title: "AI Chat", href: "/dashboard/apps/ai-chat", icon: BrainIcon },
+      { title: "AI Chat", href: "/apps/ai-chat", icon: BrainIcon },
       {
         title: "AI Chat V2",
-        href: "/dashboard/apps/ai-chat-v2",
+        href: "/apps/ai-chat-v2",
         icon: BrainCircuitIcon,
         isNew: true
       },
       {
         title: "Image Generator",
-        href: "/dashboard/apps/ai-image-generator",
+        href: "/apps/ai-image-generator",
         icon: ImagesIcon
       },
       {
         title: "Text to Speech",
-        href: "/dashboard/apps/text-to-speech",
+        href: "/apps/text-to-speech",
         icon: SpeechIcon,
         isComing: true
       }
@@ -486,7 +481,7 @@ export const defaultNavItems: NavGroup[] = [
     items: [
       {
         title: "Profile V2",
-        href: "/dashboard/pages/user-profile",
+        href: "/pages/user-profile",
         icon: UserIcon
       },
       {
@@ -494,11 +489,11 @@ export const defaultNavItems: NavGroup[] = [
         href: "/",
         icon: FingerprintIcon,
         items: [
-          { title: "Login v1", href: "/dashboard/login/v1" },
-          { title: "Login v2", href: "/dashboard/login/v2" },
-          { title: "Register v1", href: "/dashboard/register/v1" },
-          { title: "Register v2", href: "/dashboard/register/v2" },
-          { title: "Forgot Password", href: "/dashboard/forgot-password" }
+          { title: "Login v1", href: "/login/v1" },
+          { title: "Login v2", href: "/login/v2" },
+          { title: "Register v1", href: "/register/v1" },
+          { title: "Register v2", href: "/register/v2" },
+          { title: "Forgot Password", href: "/forgot-password" }
         ]
       },
       {
@@ -506,9 +501,9 @@ export const defaultNavItems: NavGroup[] = [
         href: "/",
         icon: FingerprintIcon,
         items: [
-          { title: "404", href: "/dashboard/pages/error/404" },
-          { title: "500", href: "/dashboard/pages/error/500" },
-          { title: "403", href: "/dashboard/pages/error/403" }
+          { title: "404", href: "/pages/error/404" },
+          { title: "500", href: "/pages/error/500" },
+          { title: "403", href: "/pages/error/403" }
         ]
       }
     ]
@@ -521,9 +516,9 @@ export const defaultNavItems: NavGroup[] = [
         href: "#",
         icon: PuzzleIcon,
         items: [
-          { title: "Fitness", href: "/dashboard/widgets/fitness" },
-          { title: "E-commerce", href: "/dashboard/widgets/ecommerce" },
-          { title: "Analytics", href: "/dashboard/widgets/analytics" }
+          { title: "Fitness", href: "/widgets/fitness" },
+          { title: "E-commerce", href: "/widgets/ecommerce" },
+          { title: "Analytics", href: "/widgets/analytics" }
         ]
       },
     ]
@@ -536,7 +531,7 @@ const administrationGroup: NavGroup = {
   items: [
     {
       title: "Pricing Plans",
-      href: "/dashboard/pages/pricing-plans",
+      href: "/pages/pricing-plans",
       icon: CreditCardIcon
     },
   ]
@@ -658,7 +653,7 @@ export function NavMain() {
       } else {
         toast.error("You don't have permission to access this resource");
         // Optionally redirect to 403 page
-        // router.push("/dashboard/pages/error/403");
+        // router.push("/pages/error/403");
       }
     } catch (error) {
       console.error("Permission check failed:", error);
@@ -1042,33 +1037,21 @@ export function NavMain() {
     );
   };
 
-  // Merge custom entity pages into Pages section
+  // Merge custom entity pages as a separate "Custom Pages" group
   const enhancedNavItems = React.useMemo(() => {
-    const withCustomPages = navItems.map((nav) => {
-      if (nav.title === "Pages") {
-        // Create custom entity pages items
-        const customEntityItems = customEntityPages
-          .filter((page) => page.isActive)
-          .map((page) => ({
-            title: page.name,
-            href: `/dashboard/pages/custom-entities/${page.slug}`,
-            icon: ComponentIcon, // Use ComponentIcon for custom entities
-          }));
+    const activeCustomPages = customEntityPages.filter((page) => page.isActive);
+    const customEntityItems: NavItem[] = activeCustomPages.map((page) => ({
+      title: page.name,
+      href: `/pages/custom-entities/${page.slug}`,
+      icon: ComponentIcon,
+    }));
 
-        // Add custom entity pages to the Pages section
-        return {
-          ...nav,
-          items: [
-            ...nav.items,
-            ...(customEntityItems.length > 0
-              ? [{ title: "Custom Pages", href: "#", icon: ComponentIcon, items: customEntityItems }]
-              : []),
-          ],
-        };
-      }
-      return nav;
-    });
-    const filtered = filterNavGroups(withCustomPages);
+    const groups: NavGroup[] = [...navItems];
+    if (customEntityItems.length > 0) {
+      groups.push({ title: "Custom Pages", items: customEntityItems });
+    }
+
+    const filtered = filterNavGroups(groups);
     return filterNavByUserSelection(filtered, selectedSidebarItems);
   }, [navItems, customEntityPages, selectedSidebarItems]);
 

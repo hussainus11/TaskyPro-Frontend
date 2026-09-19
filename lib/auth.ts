@@ -67,7 +67,7 @@ export function logout(): void {
   document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
   
   // Redirect to login page
-  window.location.href = '/dashboard/login/v1';
+  window.location.href = '/login/v1';
 }
 
 /**

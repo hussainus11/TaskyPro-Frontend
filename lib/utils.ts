@@ -57,7 +57,7 @@ export function generateMeta({
     description: description,
     metadataBase: new URL(`https://taskypro.com`),
     alternates: {
-      canonical: `/dashboard${canonical}`
+      canonical: `${canonical}`
     },
     openGraph: {
       images: [`/images/seo.jpg`]
