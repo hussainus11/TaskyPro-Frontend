@@ -18,6 +18,7 @@ interface ProfileData {
   projects: number;
   teams: number;
   posts: number;
+  urls: string[];
 }
 
 export function ProfileCard() {
@@ -60,6 +61,7 @@ export function ProfileCard() {
             projects: profileData.projects || 0,
             teams: profileData.teams || 0,
             posts: Array.isArray(feedPosts) ? feedPosts.length : 0,
+            urls: Array.isArray(settings?.profileUrls) ? settings.profileUrls : [],
           });
         }
       } catch (error) {
@@ -122,24 +124,17 @@ export function ProfileCard() {
                 {profile.location}
               </div>
             )}
-            <div className="flex items-center gap-3 text-sm">
-              <Link2Icon className="text-muted-foreground size-4" />
-              <a
-                href="https://shadcnuikit.com"
-                className="hover:text-primary hover:underline"
-                target="_blank">
-                https://shadcnuikit.com
-              </a>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Link2Icon className="text-muted-foreground size-4" />
-              <a
-                href="https://bundui.io/"
-                className="hover:text-primary hover:underline"
-                target="_blank">
-                https://bundui.io/
-              </a>
-            </div>
+            {profile.urls.map((url) => (
+              <div key={url} className="flex items-center gap-3 text-sm">
+                <Link2Icon className="text-muted-foreground size-4" />
+                <a
+                  href={url}
+                  className="hover:text-primary hover:underline"
+                  target="_blank">
+                  {url}
+                </a>
+              </div>
+            ))}
           </div>
         </div>
       </CardContent>

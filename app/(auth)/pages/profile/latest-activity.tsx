@@ -1,79 +1,118 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BadgeCheckIcon, BriefcaseBusinessIcon, ClockIcon } from "lucide-react";
-import { DownloadIcon } from "@radix-ui/react-icons";
+import { formatDistanceToNow } from "date-fns";
+import { BadgeCheckIcon, BriefcaseBusinessIcon, ClockIcon, UserIcon, FileIcon, MessageSquareIcon } from "lucide-react";
 
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { activitiesApi } from "@/lib/api";
+import { getCurrentUser } from "@/lib/auth";
+
+interface Activity {
+  id: number;
+  type: string;
+  message: string;
+  entityType?: string;
+  entityId?: number;
+  company?: {
+    id: number;
+    name: string;
+  };
+  createdAt: string;
+}
+
+function getActivityIcon(type: string) {
+  const typeLower = type.toLowerCase();
+  if (typeLower.includes("created") || typeLower.includes("uploaded")) {
+    return BriefcaseBusinessIcon;
+  }
+  if (typeLower.includes("assigned") || typeLower.includes("user")) {
+    return UserIcon;
+  }
+  if (typeLower.includes("commented") || typeLower.includes("message")) {
+    return MessageSquareIcon;
+  }
+  if (typeLower.includes("updated") || typeLower.includes("status")) {
+    return BadgeCheckIcon;
+  }
+  if (typeLower.includes("file") || typeLower.includes("document")) {
+    return FileIcon;
+  }
+  return BriefcaseBusinessIcon;
+}
 
 export function LatestActivity() {
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const user = getCurrentUser();
+        if (!user?.id) {
+          setLoading(false);
+          return;
+        }
+
+        const data = await activitiesApi.getActivities({ userId: user.id });
+        setActivities(Array.isArray(data) ? data.slice(0, 3) : []);
+      } catch (error) {
+        console.error("Failed to fetch latest activity:", error);
+        setActivities([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActivities();
+  }, []);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Latest Activity</CardTitle>
         <CardAction>
           <Link
-            href="#"
+            href="/pages/profile?tab=activities"
             className="text-muted-foreground hover:text-primary text-sm hover:underline">
             View All
           </Link>
         </CardAction>
       </CardHeader>
       <CardContent className="ps-8">
-        <ol className="relative border-s">
-          <li className="ms-6 mb-10 space-y-2">
-            <span className="bg-muted absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full border">
-              <BriefcaseBusinessIcon className="text-primary size-3" />
-            </span>
-            <h3 className="flex items-center font-semibold">
-              Tasky Pro v2.0.0{" "}
-              <Badge variant="outline" className="ms-2">
-                Latest
-              </Badge>
-            </h3>
-            <time className="text-muted-foreground flex items-center gap-1.5 text-sm leading-none">
-              <ClockIcon className="size-3" /> Released on December 2nd, 2025
-            </time>
-            <p className="text-muted-foreground text-sm">
-              Get access to over 20+ pages including a dashboard layout, charts, kanban board,
-              calendar, and pre-order E-commerce & Marketing pages.
-            </p>
-            <Button variant="outline" asChild>
-              <Link href="#">
-                <DownloadIcon /> Download ZIP
-              </Link>
-            </Button>
-          </li>
-          <li className="ms-6 mb-10 space-y-2">
-            <span className="bg-muted absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full border">
-              <BadgeCheckIcon className="text-primary size-3" />
-            </span>
-            <h3 className="font-semibold">Tasky Pro Figma v1.3.0</h3>
-            <time className="text-muted-foreground flex items-center gap-1.5 text-sm leading-none">
-              <ClockIcon className="size-3" /> Released on December 2nd, 2025
-            </time>
-            <p className="text-muted-foreground text-sm">
-              All of the pages and components are first designed in Figma and we keep a parity
-              between the two versions even as we update the project.
-            </p>
-          </li>
-          <li className="ms-6 space-y-2">
-            <span className="bg-muted absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full border">
-              <BriefcaseBusinessIcon className="text-primary size-3" />
-            </span>
-            <h3 className="font-semibold">Tasky Pro v1.2.2</h3>
-            <time className="text-muted-foreground flex items-center gap-1.5 text-sm leading-none">
-              <ClockIcon className="size-3" /> Released on December 2nd, 2025
-            </time>
-            <p className="text-muted-foreground text-sm">
-              Get started with dozens of web components and interactive elements built on top of
-              Tailwind CSS.
-            </p>
-          </li>
-        </ol>
+        {loading ? (
+          <div className="text-muted-foreground py-4 text-center text-sm">Loading activity...</div>
+        ) : activities.length === 0 ? (
+          <div className="text-muted-foreground py-4 text-center text-sm">No recent activity</div>
+        ) : (
+          <ol className="relative border-s">
+            {activities.map((activity, index) => {
+              const IconComponent = getActivityIcon(activity.type);
+              const isLast = index === activities.length - 1;
+
+              return (
+                <li key={activity.id} className={`ms-6 ${isLast ? "" : "mb-10"} space-y-2`}>
+                  <span className="bg-muted absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full border">
+                    <IconComponent className="text-primary size-3" />
+                  </span>
+                  <h3 className="flex items-center gap-2 font-semibold">
+                    <span className="line-clamp-2">{activity.message}</span>
+                    {index === 0 && <Badge variant="outline">Latest</Badge>}
+                  </h3>
+                  <time className="text-muted-foreground flex items-center gap-1.5 text-sm leading-none">
+                    <ClockIcon className="size-3" />
+                    {formatDistanceToNow(new Date(activity.createdAt), { addSuffix: true })}
+                  </time>
+                  {activity.company && (
+                    <p className="text-muted-foreground text-sm">{activity.company.name}</p>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        )}
       </CardContent>
     </Card>
   );

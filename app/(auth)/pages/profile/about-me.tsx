@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -10,6 +11,8 @@ import {
   TableRow
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { settingsApi } from "@/lib/api";
+import { getCurrentUser } from "@/lib/auth";
 
 type TransactionStatus = "pending" | "failed" | "paid";
 
@@ -21,52 +24,58 @@ interface Transaction {
   amount: string;
 }
 
-const transactions: Transaction[] = [
-  {
-    id: "#36223",
-    product: "Mock premium pack",
-    status: "pending",
-    date: "12/10/2025",
-    amount: "$39.90"
-  },
-  {
-    id: "#34283",
-    product: "Enterprise plan subscription",
-    status: "paid",
-    date: "11/13/2025",
-    amount: "$159.90"
-  },
-  {
-    id: "#32234",
-    product: "Business board pro license",
-    status: "paid",
-    date: "10/13/2025",
-    amount: "$89.90"
-  },
-  {
-    id: "#31354",
-    product: "Custom integration package",
-    status: "failed",
-    date: "09/13/2025",
-    amount: "$299.90"
-  },
-  {
-    id: "#30254",
-    product: "Developer toolkit license",
-    status: "paid",
-    date: "08/15/2025",
-    amount: "$129.90"
-  },
-  {
-    id: "#29876",
-    product: "Support package renewal",
-    status: "pending",
-    date: "07/22/2025",
-    amount: "$79.90"
-  }
-];
-
 export function AboutMe() {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const user = getCurrentUser();
+        if (!user?.id) {
+          setLoading(false);
+          return;
+        }
+
+        const data = await settingsApi.getBillingTransactions(user.id);
+        setTransactions(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Failed to fetch transactions:", error);
+        setTransactions([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTransactions();
+  }, []);
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Transaction History</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-muted-foreground text-center py-8 text-sm">Loading transactions...</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (transactions.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Transaction History</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-muted-foreground text-center py-8 text-sm">No transactions yet</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
