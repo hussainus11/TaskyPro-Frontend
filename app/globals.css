@@ -54,6 +54,7 @@
   --sidebar-ring: var(--base-800);
 
   --display-weight: 700;
+  --display-family: var(--text-family);
 
   --fc-button-bg-color: var(--primary);
   --fc-button-hover-bg-color: var(--primary);
