@@ -6,6 +6,7 @@ import GoogleAnalyticsInit from "@/lib/ga";
 import { fontVariables } from "@/lib/fonts";
 import NextTopLoader from "nextjs-toploader";
 
+import "@fontsource-variable/inter";
 import "./globals.css";
 
 import { ActiveThemeProvider } from "@/components/active-theme";

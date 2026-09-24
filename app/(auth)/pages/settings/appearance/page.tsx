@@ -49,7 +49,7 @@ type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
 // (no external font files) so switching never risks a production build
 // failure - see lib/fonts.ts for the same constraint.
 const FONT_FAMILY_MAP: Record<string, string | null> = {
-  inter: "var(--font-inter), ui-sans-serif, sans-serif",
+  inter: "\"Inter Variable\", ui-sans-serif, sans-serif",
   manrope: "ui-sans-serif, system-ui, sans-serif",
   system: null
 };
