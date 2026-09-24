@@ -152,7 +152,7 @@ export default function DriveUsagePage() {
   return (
     <>
       <div className="flex items-center justify-between space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">Drive Usage</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Drive Usage</h1>
       </div>
 
       <div className="w-full space-y-6">

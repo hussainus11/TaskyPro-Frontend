@@ -300,7 +300,7 @@ export default function PdfReportsPage() {
   return (
     <>
       <div className="flex items-center justify-between space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">PDF Reports</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">PDF Reports</h1>
         <Button onClick={() => router.push('/crm/settings/pdf-reports/create')}>
           <Plus className="mr-2 h-4 w-4" />
           <span className="hidden lg:inline">Create PDF Report</span>

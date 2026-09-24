@@ -789,7 +789,7 @@ export default function AddProductForm() {
                 <ChevronLeft />
               </Link>
             </Button>
-            <h1 className="text-2xl font-bold tracking-tight">Add Products</h1>
+            <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Add Products</h1>
           </div>
           <div className="flex gap-2">
             <Button type="button" variant="secondary">

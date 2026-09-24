@@ -29,7 +29,7 @@ export default function Page() {
   return (
     <>
       <div className="mb-4 flex flex-row items-center justify-between space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">Project Dashboard</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Project Dashboard</h1>
         <div className="flex items-center space-x-2">
           <CalendarDateRangePicker />
           <ExportButton />

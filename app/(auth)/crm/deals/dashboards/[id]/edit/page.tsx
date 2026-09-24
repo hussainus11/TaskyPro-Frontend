@@ -350,7 +350,7 @@ export default function EditDealDashboardPage({ params }: { params: Promise<{ id
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Edit Deal Dashboard</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Edit Deal Dashboard</h1>
         <p className="text-muted-foreground text-sm">Update the saved filter, sharing, and widgets.</p>
       </div>
 

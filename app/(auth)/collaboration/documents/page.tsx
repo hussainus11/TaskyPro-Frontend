@@ -538,7 +538,7 @@ export default function OnlineDocumentsPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between space-y-2">
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight">Online Documents</h1>
+          <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Online Documents</h1>
           <p className="text-muted-foreground text-sm">
             Create new documents or open existing ones
           </p>

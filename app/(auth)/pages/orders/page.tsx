@@ -1,5 +1,6 @@
 "use client";
 
+import { PageHeader } from "@/components/layout/page-header";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PlusIcon } from "@radix-ui/react-icons";
@@ -126,14 +127,17 @@ export default function Page() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-row items-center justify-between">
-        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Orders</h1>
-        <Button asChild>
-          <Link href="#">
-            <PlusIcon /> Create Order
-          </Link>
-        </Button>
-      </div>
+      <PageHeader
+        title="Orders"
+        description="Track and manage customer orders."
+        actions={
+          <Button asChild>
+            <Link href="#">
+              <PlusIcon /> Create Order
+            </Link>
+          </Button>
+        }
+      />
       {!mounted ? (
         <div className="flex h-64 items-center justify-center">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />

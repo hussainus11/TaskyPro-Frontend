@@ -303,7 +303,7 @@ export function FileManager() {
         {/* Breadcrumb Navigation */}
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold tracking-tight">Files</h1>
+            <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Files</h1>
             {pathSegments.length > 0 && (
               <>
                 <Separator

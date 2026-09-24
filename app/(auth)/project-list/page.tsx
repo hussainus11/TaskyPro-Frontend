@@ -97,7 +97,7 @@ export default function Page() {
       />
       <div className="mb-4 flex flex-row items-center justify-between space-y-2">
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight">Projects</h1>
+          <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Projects</h1>
           <p className="text-muted-foreground text-sm">List of your ongoing projects</p>
         </div>
         <Button onClick={() => setDialogOpen(true)}>

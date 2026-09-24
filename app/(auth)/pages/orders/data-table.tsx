@@ -1,5 +1,6 @@
 "use client";
 
+import { TableEmptyRow } from "@/components/ui/custom/table-states";
 import * as React from "react";
 import Link from "next/link";
 import {
@@ -483,11 +484,7 @@ export default function OrdersDataTable({ data }: { data: Order[] }) {
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
-                    No results.
-                  </TableCell>
-                </TableRow>
+                <TableEmptyRow colSpan={columns.length} title="No orders found" description="Orders will show up here once customers place them." />
               )}
             </TableBody>
           </Table>

@@ -305,7 +305,7 @@ export default function BusinessProcessesPage() {
   return (
     <>
       <div className="flex items-center justify-between space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">Business Processes</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Business Processes</h1>
         <Button onClick={() => setDialogOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
           <span className="hidden lg:inline">Create Process</span>

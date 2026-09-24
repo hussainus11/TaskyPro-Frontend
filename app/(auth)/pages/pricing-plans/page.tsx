@@ -28,7 +28,7 @@ export default function Page() {
     <>
       <div className="flex items-center justify-between space-y-2">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Pricing Plans</h1>
+          <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Pricing Plans</h1>
           <p className="text-muted-foreground">
             Manage pricing plans and their features. Plans are organized by industry.
           </p>

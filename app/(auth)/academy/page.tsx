@@ -24,7 +24,7 @@ export default function Page() {
   return (
     <div className="space-y-4">
       <div className="mb-4">
-        <h1 className="text-2xl font-bold tracking-tight">Academy</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Academy</h1>
       </div>
       <div className="grid gap-4 lg:grid-cols-12">
         <div className="lg:col-span-12 xl:col-span-6">

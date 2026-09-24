@@ -157,7 +157,7 @@ export default function ExceptionsPage() {
   return (
     <>
       <div className="flex items-center justify-between space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">Exceptions</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Exceptions</h1>
         <Button
           variant="outline"
           onClick={fetchExceptions}

@@ -315,7 +315,7 @@ export default function AutoNumberingEntityPage() {
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Auto-Numbering: {entityLabel}</h1>
+            <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Auto-Numbering: {entityLabel}</h1>
             <p className="text-muted-foreground">
               Configure automatic numbering for {entityLabel.toLowerCase()}
             </p>

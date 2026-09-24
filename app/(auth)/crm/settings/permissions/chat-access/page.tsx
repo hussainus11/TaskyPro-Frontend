@@ -295,7 +295,7 @@ export default function ChatAccessPage() {
     <>
       <div className="flex items-center justify-between space-y-2">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Chat Access Management</h1>
+          <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Chat Access Management</h1>
           <p className="text-muted-foreground">
             Manage chat access between users. Configure which users can chat with each other. 
             Click "Manage Access" for any user to select which other users they can chat with.

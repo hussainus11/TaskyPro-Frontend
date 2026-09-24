@@ -1,4 +1,5 @@
 import { generateMeta } from "@/lib/utils";
+import { PageHeader } from "@/components/layout/page-header";
 import Link from "next/link";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { Metadata } from "next";
@@ -84,14 +85,17 @@ export default async function Page() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">Products</h1>
-        <Button asChild>
-          <Link href="/pages/products/create">
-            <PlusIcon /> Add Product
-          </Link>
-        </Button>
-      </div>
+      <PageHeader
+        title="Products"
+        description="Manage your catalog, pricing and inventory."
+        actions={
+          <Button asChild>
+            <Link href="/pages/products/create">
+              <PlusIcon /> Add Product
+            </Link>
+          </Button>
+        }
+      />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader>

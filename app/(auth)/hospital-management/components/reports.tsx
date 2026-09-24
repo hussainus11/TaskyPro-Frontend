@@ -1,5 +1,6 @@
 "use client";
 
+import { TableEmptyRow } from "@/components/ui/custom/table-states";
 import { useState } from "react";
 import {
   flexRender,
@@ -107,11 +108,7 @@ export default function HospitalReports() {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
+              <TableEmptyRow colSpan={columns.length} />
             )}
           </TableBody>
         </Table>

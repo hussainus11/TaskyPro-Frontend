@@ -291,7 +291,7 @@ export default function CollabsPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between space-y-2">
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight">Collabs</h1>
+          <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Collabs</h1>
           <p className="text-muted-foreground text-sm">
             Collaborate with outside teams and members
           </p>

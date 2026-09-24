@@ -29,7 +29,7 @@ export default async function Page() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">Api Keys Management</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Api Keys Management</h1>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <UpgradePlanCard />

@@ -202,7 +202,7 @@ export default function Page() {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input placeholder="Your display name" {...field} />
                   </FormControl>
                   <FormDescription>
                     This is your public display name. It can be your real name or a pseudonym. You

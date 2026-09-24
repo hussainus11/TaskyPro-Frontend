@@ -1,5 +1,6 @@
 "use client";
 
+import { TableEmptyRow } from "@/components/ui/custom/table-states";
 import * as React from "react";
 import Image from "next/image";
 import {
@@ -238,11 +239,7 @@ export function CoursesListTable() {
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
-                    No results.
-                  </TableCell>
-                </TableRow>
+                <TableEmptyRow colSpan={columns.length} />
               )}
             </TableBody>
           </Table>

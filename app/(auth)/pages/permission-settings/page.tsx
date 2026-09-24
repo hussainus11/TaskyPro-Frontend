@@ -1055,7 +1055,7 @@ export default function PermissionSettingsPage() {
     <div className="space-y-4 h-[calc(100vh-8rem)] flex flex-col">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Access permissions</h1>
+          <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Access permissions</h1>
           <p className="text-muted-foreground text-sm mt-1">
             {viewMode === "matrix" 
               ? "Configure permissions across all roles in a matrix view"

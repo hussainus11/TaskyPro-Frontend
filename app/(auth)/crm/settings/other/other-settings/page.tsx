@@ -98,7 +98,7 @@ export default function OtherSettingsPage() {
   return (
     <>
       <div className="flex items-center justify-between space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">Other Settings</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Other Settings</h1>
         <div className="flex gap-2">
           <Button
             variant="outline"

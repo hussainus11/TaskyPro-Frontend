@@ -1,5 +1,6 @@
 "use client";
 
+import { TableEmptyRow } from "@/components/ui/custom/table-states";
 import * as React from "react";
 import {
   ColumnDef,
@@ -839,11 +840,7 @@ export default function ProductList({ data }: { data: Product[] }) {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
+              <TableEmptyRow colSpan={columns.length} title="No products found" description="Products you add will show up here." />
             )}
           </TableBody>
         </Table>

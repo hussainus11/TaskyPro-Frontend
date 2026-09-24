@@ -235,7 +235,7 @@ export default function FeedPage() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">Feed</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Feed</h1>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button>

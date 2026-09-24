@@ -53,7 +53,7 @@ export default function Page() {
   return (
     <>
       <div className="flex items-center justify-between space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">Companies</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Companies</h1>
         <Button onClick={() => setIsSheetOpen(true)}>
           <PlusCircledIcon /> Add New Company
         </Button>

@@ -57,7 +57,7 @@ export default function Tasks({ tasks }: { tasks: Todo[] }) {
   return (
     <div className="space-y-4">
       <header className="mb-4">
-        <h1 className="text-2xl font-bold tracking-tight">Todo List</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Todo List</h1>
       </header>
 
       <TodoList

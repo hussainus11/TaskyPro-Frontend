@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "next-themes";
 import GoogleAnalyticsInit from "@/lib/ga";
 import { fontVariables } from "@/lib/fonts";
-import { GeistSans } from "geist/font/sans";
 import NextTopLoader from "nextjs-toploader";
 
 import "./globals.css";
@@ -37,7 +36,7 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={cn("bg-background group/layout font-sans", fontVariables, GeistSans.variable)}
+        className={cn("bg-background group/layout font-sans", fontVariables)}
         {...bodyAttributes}>
         <ThemeProvider
           attribute="class"

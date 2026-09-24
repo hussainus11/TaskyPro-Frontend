@@ -58,7 +58,7 @@ export default function PdfReportDetailPage({ params }: { params: Promise<{ id: 
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">{report.name}</h1>
+            <h1 className="text-xl font-bold tracking-tight lg:text-2xl">{report.name}</h1>
             {report.description && (
               <p className="text-muted-foreground text-sm mt-1">{report.description}</p>
             )}

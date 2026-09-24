@@ -634,7 +634,7 @@ export default function DealDashboardsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Deal Dashboards</h1>
+          <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Deal Dashboards</h1>
           <p className="text-muted-foreground text-sm">
             Save deal board filters + layout. Drag cards to reorder your library.
           </p>

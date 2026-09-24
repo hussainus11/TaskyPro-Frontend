@@ -317,7 +317,7 @@ export default function CreateDealDashboardPage() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Create Deal Dashboard</h1>
+        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Create Deal Dashboard</h1>
         <p className="text-muted-foreground text-sm">
           This saves a reusable filter + a dashboard layout/widgets definition. Opening a dashboard applies the filter on the Deals board.
         </p>
