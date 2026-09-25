@@ -49,6 +49,11 @@ export const THEMES = [
     colors: ["oklch(0.6489 0.237 26.9728)", "oklch(0.968 0.211 109.7692)", "oklch(0.5635 0.2408 260.8178)"]
   },
   {
+    name: "Notebook",
+    value: "notebook",
+    colors: ["oklch(0.4891 0 0)", "oklch(0.9354 0.0456 94.8549)"]
+  },
+  {
     name: "Lavender Dream",
     value: "lavender-dream",
     colors: ["oklch(0.71 0.16 293.54)"]
