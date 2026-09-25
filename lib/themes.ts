@@ -25,71 +25,56 @@ export type WorkspaceBackground = {
 
 export const WORKSPACE_BACKGROUNDS: WorkspaceBackground[] = [
   { name: "None", value: "none", tone: "light", css: null },
+  // Every artwork is built from the active theme preset's --primary, so switching the
+  // theme preset recolours the workspace. "dark" ones are mixed into a deep base so the
+  // sidebar text stays legible whatever the preset colour is; "light" ones into white.
+  {
+    name: "Gradient",
+    value: "gradient",
+    tone: "dark",
+    css: "linear-gradient(135deg, color-mix(in oklab, var(--primary) 45%, oklch(0.16 0.03 265)), color-mix(in oklab, var(--primary) 85%, oklch(0.25 0.03 265)))"
+  },
   {
     name: "Aurora",
     value: "aurora",
     tone: "dark",
-    css: "radial-gradient(at 18% 12%, oklch(0.62 0.2 265) 0, transparent 55%), radial-gradient(at 88% 8%, oklch(0.65 0.22 315) 0, transparent 50%), radial-gradient(at 72% 92%, oklch(0.6 0.15 200) 0, transparent 55%), oklch(0.32 0.1 270)"
-  },
-  {
-    name: "Ocean",
-    value: "ocean",
-    tone: "dark",
-    css: "linear-gradient(135deg, oklch(0.42 0.13 245), oklch(0.62 0.13 215))"
-  },
-  {
-    name: "Sunset",
-    value: "sunset",
-    tone: "dark",
-    css: "linear-gradient(135deg, oklch(0.6 0.2 35), oklch(0.58 0.22 5) 55%, oklch(0.45 0.18 320))"
-  },
-  {
-    name: "Forest",
-    value: "forest",
-    tone: "dark",
-    css: "linear-gradient(135deg, oklch(0.38 0.08 170), oklch(0.55 0.12 150))"
+    css: "radial-gradient(at 18% 12%, color-mix(in oklab, var(--primary) 90%, white 10%) 0, transparent 55%), radial-gradient(at 88% 8%, color-mix(in oklab, var(--primary) 60%, oklch(0.65 0.22 315)) 0, transparent 50%), radial-gradient(at 72% 92%, color-mix(in oklab, var(--primary) 60%, oklch(0.6 0.15 200)) 0, transparent 55%), color-mix(in oklab, var(--primary) 35%, oklch(0.16 0.03 265))"
   },
   {
     name: "Midnight",
     value: "midnight",
     tone: "dark",
-    css: "radial-gradient(at 30% 0%, oklch(0.38 0.1 265), transparent 60%), oklch(0.2 0.04 265)"
+    css: "radial-gradient(at 30% 0%, color-mix(in oklab, var(--primary) 60%, transparent) 0, transparent 60%), color-mix(in oklab, var(--primary) 12%, oklch(0.16 0.03 265))"
   },
   {
-    name: "Lavender",
-    value: "lavender",
-    tone: "light",
-    css: "linear-gradient(135deg, oklch(0.91 0.05 300), oklch(0.84 0.09 270))"
+    name: "Glow",
+    value: "glow",
+    tone: "dark",
+    css: "radial-gradient(circle at 85% 15%, color-mix(in oklab, var(--primary) 90%, white 15%) 0, transparent 45%), radial-gradient(circle at 10% 90%, color-mix(in oklab, var(--primary) 70%, oklch(0.16 0.03 265)) 0, transparent 55%), color-mix(in oklab, var(--primary) 25%, oklch(0.16 0.03 265))"
   },
   {
-    name: "Sky",
-    value: "sky",
+    name: "Soft",
+    value: "soft",
     tone: "light",
-    css: "linear-gradient(135deg, oklch(0.94 0.04 230), oklch(0.85 0.09 225))"
+    css: "linear-gradient(135deg, color-mix(in oklab, var(--primary) 12%, white), color-mix(in oklab, var(--primary) 32%, white))"
   },
   {
-    name: "Sand",
-    value: "sand",
+    name: "Tint",
+    value: "tint",
     tone: "light",
-    css: "linear-gradient(135deg, oklch(0.95 0.025 85), oklch(0.89 0.055 60))"
-  },
-  {
-    name: "Mist",
-    value: "mist",
-    tone: "light",
-    css: "linear-gradient(160deg, oklch(0.95 0.01 250), oklch(0.87 0.03 250))"
+    css: "radial-gradient(at 15% 10%, color-mix(in oklab, var(--primary) 30%, white) 0, transparent 55%), radial-gradient(at 90% 85%, color-mix(in oklab, var(--primary) 22%, white) 0, transparent 55%), color-mix(in oklab, var(--primary) 6%, white)"
   },
   {
     name: "Dots",
     value: "dots",
     tone: "light",
-    css: "radial-gradient(oklch(0.72 0.012 250) 1px, transparent 1px) 0 0 / 18px 18px, oklch(0.96 0.005 250)"
+    css: "radial-gradient(color-mix(in oklab, var(--primary) 40%, transparent) 1px, transparent 1px) 0 0 / 18px 18px, color-mix(in oklab, var(--primary) 7%, white)"
   },
   {
     name: "Grid",
     value: "grid",
     tone: "light",
-    css: "linear-gradient(oklch(0.86 0.01 250) 1px, transparent 1px) 0 0 / 28px 28px, linear-gradient(90deg, oklch(0.86 0.01 250) 1px, transparent 1px) 0 0 / 28px 28px, oklch(0.97 0.004 250)"
+    css: "linear-gradient(color-mix(in oklab, var(--primary) 18%, transparent) 1px, transparent 1px) 0 0 / 28px 28px, linear-gradient(90deg, color-mix(in oklab, var(--primary) 18%, transparent) 1px, transparent 1px) 0 0 / 28px 28px, color-mix(in oklab, var(--primary) 6%, white)"
   }
 ];
 

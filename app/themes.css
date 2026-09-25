@@ -876,9 +876,9 @@ body[data-theme-background] [data-slot="sidebar-inner"] {
 }
 
 body[data-theme-background] [data-slot="sidebar-inset"] {
-    background: color-mix(in oklab, var(--background) 90%, transparent);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
+    background: color-mix(in oklab, var(--background) 68%, transparent);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
 }
 
 /* Dark artwork in light mode: flip the sidebar to light text. */
