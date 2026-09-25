@@ -850,3 +850,44 @@ body {
 /* Scale */
 
 
+
+/* Workspace background (Bitrix24-style): artwork behind the whole app shell. The
+   artwork itself comes from --workspace-bg (see WORKSPACE_BACKGROUNDS in lib/themes.ts). */
+body[data-theme-background] {
+    background: var(--workspace-bg);
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* Dim the artwork in dark mode so panels and text keep their contrast. */
+.dark body[data-theme-background]::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: oklch(0 0 0 / 0.55);
+}
+
+/* Sidebar sits directly on the artwork; the content card becomes frosted glass. */
+body[data-theme-background] [data-slot="sidebar-wrapper"],
+body[data-theme-background] [data-slot="sidebar-inner"] {
+    background: transparent;
+}
+
+body[data-theme-background] [data-slot="sidebar-inset"] {
+    background: color-mix(in oklab, var(--background) 90%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+}
+
+/* Dark artwork in light mode: flip the sidebar to light text. */
+html:not(.dark) body[data-theme-background-tone="dark"] [data-slot="sidebar"],
+html:not(.dark) body[data-theme-background-tone="dark"] [data-slot="sidebar-container"] {
+    --sidebar-foreground: oklch(0.98 0 0);
+    --sidebar-accent: oklch(1 0 0 / 0.16);
+    --sidebar-accent-foreground: oklch(1 0 0);
+    --sidebar-border: oklch(1 0 0 / 0.22);
+    --primary: oklch(1 0 0);
+    --muted-foreground: oklch(0.92 0 0);
+}

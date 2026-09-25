@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
-import { DEFAULT_THEME, ThemeType } from "@/lib/themes";
+import { DEFAULT_THEME, ThemeType, getWorkspaceBackground } from "@/lib/themes";
 
 function setThemeCookie(key: string, value: string | null) {
   if (typeof window === "undefined") return;
@@ -63,7 +63,20 @@ export function ActiveThemeProvider({
       setThemeCookie("theme_scale", null);
       body.removeAttribute("data-theme-scale");
     }
-  }, [theme.preset, theme.radius, theme.scale, theme.contentLayout]);
+
+    const background = getWorkspaceBackground(theme.background);
+    if (background.css) {
+      setThemeCookie("theme_background", background.value);
+      body.setAttribute("data-theme-background", background.value);
+      body.setAttribute("data-theme-background-tone", background.tone);
+      body.style.setProperty("--workspace-bg", background.css);
+    } else {
+      setThemeCookie("theme_background", null);
+      body.removeAttribute("data-theme-background");
+      body.removeAttribute("data-theme-background-tone");
+      body.style.removeProperty("--workspace-bg");
+    }
+  }, [theme.preset, theme.radius, theme.scale, theme.contentLayout, theme.background]);
 
   return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
 }
