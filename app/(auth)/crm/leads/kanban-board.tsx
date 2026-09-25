@@ -1,5 +1,6 @@
 "use client";
 
+import { PageHeader } from "@/components/layout/page-header";
 import * as React from "react";
 import {
   GripVertical,
@@ -787,11 +788,7 @@ export default function KanbanBoard() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-row items-center justify-between">
-        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Leads</h1>
-        <div className="flex items-center space-x-2">
-        </div>
-      </div>
+      <PageHeader title="Leads" description="Track prospects and move them through your pipeline." />
       <Tabs defaultValue="board" className="w-full">
         <div className="mb-2 flex justify-between gap-3">
           <TabsList className="z-10">

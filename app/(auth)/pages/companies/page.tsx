@@ -1,5 +1,6 @@
 'use client';
 
+import { PageHeader } from "@/components/layout/page-header";
 import { useEffect, useState } from "react";
 import { companiesApi } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth";
@@ -52,12 +53,15 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex items-center justify-between space-y-2">
-        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Companies</h1>
-        <Button onClick={() => setIsSheetOpen(true)}>
-          <PlusCircledIcon /> Add New Company
-        </Button>
-      </div>
+      <PageHeader
+        title="Companies"
+        description="All tenant companies on the platform."
+        actions={
+          <Button onClick={() => setIsSheetOpen(true)}>
+            <PlusCircledIcon /> Add New Company
+          </Button>
+        }
+      />
       <CompaniesDataTable data={companies} />
       <AddCompanySheet
         isOpen={isSheetOpen}

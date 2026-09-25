@@ -1,5 +1,6 @@
 "use client";
 
+import { PageHeader } from "@/components/layout/page-header";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -31,17 +32,18 @@ export default function Page() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-row items-center justify-between">
-        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Profile Page</h1>
-        <div className="flex items-center space-x-2">
+      <PageHeader
+        title="Profile"
+        description="Your personal details, activity and connections."
+        actions={
           <Button asChild>
             <Link href="/pages/settings">
               <Settings />
               Settings
             </Link>
           </Button>
-        </div>
-      </div>
+        }
+      />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
