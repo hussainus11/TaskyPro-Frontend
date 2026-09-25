@@ -88,41 +88,40 @@ async function apiRequest(endpoint: string, options?: RequestInit) {
 
 // Notes API functions
 export const notesApi = {
-
   // Get all notes for a user
   getNotes: (userId: number) => apiRequest(`/users/${userId}/notes`),
 
-  // Get a single notegetNote: (id: number) => apiRequest(`/${id}`),
+  getNote: (id: number) => apiRequest(`/notes/${id}`),
 
   createNote: (note: any) => apiRequest('/notes', {
     method: 'POST',
     body: JSON.stringify(note),
   }),
 
-  updateNote: (id: number, note: any) => apiRequest(`/${id}`, {
+  updateNote: (id: number, note: any) => apiRequest(`/notes/${id}`, {
     method: 'PUT',
     body: JSON.stringify(note),
   }),
 
-  deleteNote: (id: number) => apiRequest(`/${id}`, {
+  deleteNote: (id: number) => apiRequest(`/notes/${id}`, {
     method: 'DELETE',
   }),
 
-getNoteLabels: (userId: number) => apiRequest(`/users/${userId}/note-labels`),
+  getNoteLabels: (userId: number) => apiRequest(`/users/${userId}/note-labels`),
 
-createNoteLabel: (label: any) => apiRequest('/note-labels', {
-  method: 'POST',
-  body: JSON.stringify(label),
-}),
+  createNoteLabel: (label: any) => apiRequest('/notes/note-labels', {
+    method: 'POST',
+    body: JSON.stringify(label),
+  }),
 
-updateNoteLabel: (id: number, label: any) => apiRequest(`/note-labels/${id}`, {
-  method: 'PUT',
-  body: JSON.stringify(label),
-}),
+  updateNoteLabel: (id: number, label: any) => apiRequest(`/notes/note-labels/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(label),
+  }),
 
-deleteNoteLabel: (id: number) => apiRequest(`/note-labels/${id}`, {
-  method: 'DELETE',
-}),
+  deleteNoteLabel: (id: number) => apiRequest(`/notes/note-labels/${id}`, {
+    method: 'DELETE',
+  }),
 };
 
 // Companies API functions

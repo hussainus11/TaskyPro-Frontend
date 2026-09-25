@@ -1,47 +1,30 @@
-import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { FileSearchIcon, LayoutGridIcon, ListIcon, MenuIcon, Search } from "lucide-react";
+import { FileSearchIcon, LayoutGridIcon, ListIcon, MenuIcon, NotebookPenIcon, Search } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { AddNoteModal } from "@/app/(auth)/apps/notes/add-note-modal";
-import { Note } from "@/app/(auth)/apps/notes/types";
 import NoteListItem from "@/app/(auth)/apps/notes/note-list-item";
-import { API_BASE_URL, notesApi } from "@/lib/api";
 import { NoteMobileSidebar } from "@/app/(auth)/apps/notes/note-sidebar";
+import { useNotesStore } from "@/app/(auth)/apps/notes/store";
 
 export default function NoteContent() {
-  const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"masonry" | "list">("masonry");
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { notes, loading, view, activeLabelId, searchQuery, setSearchQuery, setActiveLabel } =
+    useNotesStore();
 
-  // For now, using a hardcoded userId. In a real app, this would come from auth context
-  const userId = 1;
-
-  useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        console.log('Fetching notes');
-        const fetchedNotes = await fetch(`${API_BASE_URL}/notes`);
-        console.log(fetchedNotes);
-        if (fetchedNotes.ok) {
-          const data = await fetchedNotes.json();
-        setNotes(data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch notes:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNotes();
-  }, [userId]);
-
-  const filteredNotes = notes.filter((note: Note) =>
-    note.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const query = searchQuery.trim().toLowerCase();
+  const visibleNotes = notes.filter((note) => {
+    if (note.isArchived !== (view === "archive")) return false;
+    if (activeLabelId !== null && !note.labels.some((label) => label.id === activeLabelId)) {
+      return false;
+    }
+    return !query || note.title.toLowerCase().includes(query);
+  });
+  const isFiltering = query.length > 0 || activeLabelId !== null;
 
   return (
     <div className="flex-1">
@@ -85,33 +68,56 @@ export default function NoteContent() {
         </div>
       </div>
 
-      {searchQuery && filteredNotes.length === 0 && (
-        <div className="flex flex-col items-center justify-center p-4 text-center">
-          <div className="bg-muted/30 mb-4 rounded-full p-6">
-            <FileSearchIcon className="text-muted-foreground h-12 w-12" />
-          </div>
-          <h3 className="mb-2 text-xl font-medium">No notes found</h3>
-          <p className="text-muted-foreground max-w-md">
-            {`We couldn't find any notes matching "${searchQuery}".`}
-          </p>
-          {searchQuery && (
-            <Button variant="outline" className="mt-4">
-              Clear all filters
+      {loading ? (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-40 w-full rounded-md" />
+          ))}
+        </div>
+      ) : visibleNotes.length === 0 ? (
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              {isFiltering ? <FileSearchIcon /> : <NotebookPenIcon />}
+            </EmptyMedia>
+            <EmptyTitle>
+              {isFiltering
+                ? "No matching notes"
+                : view === "archive"
+                  ? "Nothing archived"
+                  : "No notes yet"}
+            </EmptyTitle>
+            <EmptyDescription>
+              {isFiltering
+                ? "Try a different search or label."
+                : view === "archive"
+                  ? "Archived notes will show up here."
+                  : "Create your first note with the Add Note button."}
+            </EmptyDescription>
+          </EmptyHeader>
+          {isFiltering && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSearchQuery("");
+                setActiveLabel(null);
+              }}>
+              Clear filters
             </Button>
           )}
+        </Empty>
+      ) : (
+        <div
+          data-view-mode={viewMode}
+          className={cn("group", {
+            "box-border columns-1 gap-4 [column-fill:_balance] group-data-[theme-content-layout=centered]/layout:columns-3 group-data-[theme-content-layout=full]/layout:columns-1 sm:group-data-[theme-content-layout=full]:columns-2 md:group-data-[theme-content-layout=full]/layout:columns-3 lg:columns-2 xl:group-data-[theme-content-layout=full]/layout:columns-4":
+              viewMode === "masonry"
+          })}>
+          {visibleNotes.map((note) => (
+            <NoteListItem key={note.id} note={note} />
+          ))}
         </div>
       )}
-
-      <div
-        data-view-mode={viewMode}
-        className={cn("group", {
-          "box-border columns-1 gap-4 [column-fill:_balance] group-data-[theme-content-layout=centered]/layout:columns-3 group-data-[theme-content-layout=full]/layout:columns-1 sm:group-data-[theme-content-layout=full]:columns-2 md:group-data-[theme-content-layout=full]/layout:columns-3 lg:columns-2 xl:group-data-[theme-content-layout=full]/layout:columns-4":
-            viewMode === "masonry"
-        })}>
-        {filteredNotes.map((note: Note, key: number) => (
-          <NoteListItem key={key} note={note} />
-        ))}
-      </div>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { ImageIcon, Tag, PenSquare, Check, Trash2Icon, ArchiveIcon } from "lucide-react";
+import { ImageIcon, Tag, PenSquare, Check } from "lucide-react";
 import { MinimalTiptapEditor } from "@/components/ui/custom/minimal-tiptap";
 import { Content } from "@tiptap/react";
 
@@ -23,16 +23,12 @@ import {
 } from "@/components/ui/command";
 import { NoteLabel } from "@/app/(auth)/apps/notes/types";
 import { Badge } from "@/components/ui/badge";
-import { noteLabels } from "@/app/(auth)/apps/notes/data";
-import { notesApi } from "@/lib/api";
-import { getCurrentUser } from "@/lib/auth";
+import { useNotesStore } from "@/app/(auth)/apps/notes/store";
 import { toast } from "sonner";
 
-interface AddNoteModalProps {
-  onNoteCreated?: () => void;
-}
-
-export function AddNoteModal({ onNoteCreated }: AddNoteModalProps) {
+export function AddNoteModal() {
+  const noteLabels = useNotesStore((state) => state.labels);
+  const createNote = useNotesStore((state) => state.createNote);
   const [imagePreview, setImagePreview] = React.useState<string | null>(null);
   const [value, setValue] = React.useState<Content>("");
   const [selectedTags, setSelectedTags] = React.useState<NoteLabel[]>([]);
@@ -59,75 +55,29 @@ export function AddNoteModal({ onNoteCreated }: AddNoteModalProps) {
       return;
     }
 
-    const user = getCurrentUser();
-    if (!user) {
-      toast.error("Please log in to create notes");
-      return;
-    }
-
     setIsSubmitting(true);
 
-    try {
-      // Extract HTML content from the editor
-      let content: string | null = null;
-      if (value) {
-        if (typeof value === 'string') {
-          content = value;
-        } else if ((value as any)?.html) {
-          content = (value as any).html;
-        } else if ((value as any)?.text) {
-          content = (value as any).text;
-        }
-      }
-      
-      // Determine note type based on content
-      let noteType: "text" | "checklist" | "image" = "text";
-      if (imagePreview) {
-        noteType = "image";
-      }
+    let content: string | null = null;
+    if (typeof value === "string") {
+      content = value;
+    } else if (value && typeof value === "object" && "html" in value) {
+      content = String((value as { html: unknown }).html);
+    }
 
-      const noteData = {
-        title: title.trim(),
-        content: content || null,
-        type: noteType,
-        userId: user.id,
-        isArchived: false,
-        image: imagePreview || null,
-        labelIds: selectedTags.map(tag => tag.id),
-      };
+    const created = await createNote({
+      title: title.trim(),
+      content: content || null,
+      image: imagePreview,
+      labelIds: selectedTags.map((tag) => tag.id)
+    });
 
-      console.log('Creating note with data:', noteData);
-
-      await notesApi.createNote(noteData);
-      
-      toast.success("Note created successfully!");
-      
-      // Reset form
+    setIsSubmitting(false);
+    if (created) {
       setTitle("");
       setValue("");
       setImagePreview(null);
       setSelectedTags([]);
       setIsOpen(false);
-      
-      // Call callback to refresh notes list
-      if (onNoteCreated) {
-        onNoteCreated();
-      }
-      
-      // Dispatch custom event for other components to listen
-      window.dispatchEvent(new CustomEvent('noteCreated'));
-      
-      // Fallback: reload the page if no callback
-      if (!onNoteCreated) {
-        setTimeout(() => window.location.reload(), 500);
-      }
-    } catch (error: any) {
-      console.error("Failed to create note:", error);
-      toast.error("Failed to create note", {
-        description: error.message || "An error occurred",
-      });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -146,7 +96,7 @@ export function AddNoteModal({ onNoteCreated }: AddNoteModalProps) {
               src={imagePreview}
               width={200}
               height={200}
-              alt="shadcn/ui"
+              alt="Note image preview"
               className="aspect-video w-full rounded-tl-md rounded-tr-md object-cover"
               unoptimized
             />
@@ -217,23 +167,15 @@ export function AddNoteModal({ onNoteCreated }: AddNoteModalProps) {
                             <CommandList>
                               <CommandEmpty>No labels found.</CommandEmpty>
                               <CommandGroup className="p-2">
-                                {noteLabels &&
-                                  noteLabels.length &&
-                                  noteLabels.map((label, key: number) => (
+                                {noteLabels.map((label) => (
                                     <CommandItem
-                                      key={key}
+                                      key={label.id}
                                       className="flex items-center py-2"
                                       onSelect={() => {
-                                        if (selectedTags.includes(label)) {
-                                          return setSelectedTags(
-                                            selectedTags.filter((item) => item.id !== label.id)
-                                          );
-                                        }
-
-                                        return setSelectedTags(
-                                          [...noteLabels].filter((u) =>
-                                            [...selectedTags, label].includes(u)
-                                          )
+                                        setSelectedTags((current) =>
+                                          current.some((item) => item.id === label.id)
+                                            ? current.filter((item) => item.id !== label.id)
+                                            : [...current, label]
                                         );
                                       }}>
                                       <div className="flex grow items-center gap-2">
@@ -243,7 +185,7 @@ export function AddNoteModal({ onNoteCreated }: AddNoteModalProps) {
                                             label.color
                                           )}></span>
                                         <span className="text-sm leading-none">{label.title}</span>
-                                        {selectedTags.includes(label) ? (
+                                        {selectedTags.some((item) => item.id === label.id) ? (
                                           <Check className="text-primary ms-auto size-3" />
                                         ) : null}
                                       </div>
@@ -257,22 +199,6 @@ export function AddNoteModal({ onNoteCreated }: AddNoteModalProps) {
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>Add tag</TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <ArchiveIcon className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Archive</TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <Trash2Icon className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Delete</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>

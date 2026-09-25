@@ -428,7 +428,7 @@ export const defaultNavItems: NavGroup[] = [
         href: "/pages/business-processes",
         icon: Workflow
       },
-      { title: "Notes", href: "/apps/notes", icon: StickyNoteIcon, isDataBadge: "8" },
+      { title: "Notes", href: "/apps/notes", icon: StickyNoteIcon },
       // { title: "Chats", href: "/apps/chat", icon: MessageSquareIcon, isDataBadge: "5" },
       { title: "Mail", href: "/apps/mail", icon: MailIcon },
       {
