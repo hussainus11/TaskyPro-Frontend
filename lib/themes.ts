@@ -44,6 +44,11 @@ export const THEMES = [
     colors: ["oklch(0.59 0.20 277.12)"]
   },
   {
+    name: "Neo Brutalism",
+    value: "neo-brutalism",
+    colors: ["oklch(0.6489 0.237 26.9728)", "oklch(0.968 0.211 109.7692)", "oklch(0.5635 0.2408 260.8178)"]
+  },
+  {
     name: "Lavender Dream",
     value: "lavender-dream",
     colors: ["oklch(0.71 0.16 293.54)"]

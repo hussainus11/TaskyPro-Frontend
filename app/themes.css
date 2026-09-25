@@ -5,6 +5,88 @@ body {
 
 /* Theme presets */
 
+/* Neo Brutalism (from tweakcn): zero radius, hard black shadows, heavy borders, DM Sans. */
+[data-theme-preset="neo-brutalism"] {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0 0 0);
+    --primary: oklch(0.6489 0.237 26.9728);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.968 0.211 109.7692);
+    --secondary-foreground: oklch(0 0 0);
+    --muted: oklch(0.9551 0 0);
+    --muted-foreground: oklch(0.3211 0 0);
+    --accent: oklch(0.5635 0.2408 260.8178);
+    --accent-foreground: oklch(1 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0 0 0);
+    --input: oklch(0 0 0);
+    --ring: oklch(0.6489 0.237 26.9728);
+    --chart-1: oklch(0.6489 0.237 26.9728);
+    --chart-2: oklch(0.968 0.211 109.7692);
+    --chart-3: oklch(0.5635 0.2408 260.8178);
+    --chart-4: oklch(0.7323 0.2492 142.4953);
+    --chart-5: oklch(0.5931 0.2726 328.3634);
+    --sidebar: oklch(0.9551 0 0);
+    --sidebar-foreground: oklch(0 0 0);
+    --sidebar-primary: oklch(0.6489 0.237 26.9728);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.5635 0.2408 260.8178);
+    --sidebar-accent-foreground: oklch(1 0 0);
+    --sidebar-border: oklch(0 0 0);
+    --sidebar-ring: oklch(0.6489 0.237 26.9728);
+    --radius: 0px;
+    --shadow-2xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+    --shadow-xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+    --shadow-sm: 4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+    --shadow: 4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+    --shadow-md: 4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 2px 4px -1px hsl(0 0% 0% / 1);
+    --shadow-lg: 4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 4px 6px -1px hsl(0 0% 0% / 1);
+    --shadow-xl: 4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 8px 10px -1px hsl(0 0% 0% / 1);
+    --shadow-2xl: 4px 4px 0px 0px hsl(0 0% 0% / 1);
+    --display-weight: 700;
+    --text-family: "DM Sans Variable", "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    letter-spacing: -0.05em;
+
+    @variant dark {
+        --background: oklch(0 0 0);
+        --foreground: oklch(1 0 0);
+        --card: oklch(0.3211 0 0);
+        --card-foreground: oklch(1 0 0);
+        --popover: oklch(0.3211 0 0);
+        --popover-foreground: oklch(1 0 0);
+        --primary: oklch(0.7044 0.1872 23.1858);
+        --primary-foreground: oklch(0 0 0);
+        --secondary: oklch(0.9691 0.2005 109.6228);
+        --secondary-foreground: oklch(0 0 0);
+        --muted: oklch(0.2178 0 0);
+        --muted-foreground: oklch(0.8452 0 0);
+        --accent: oklch(0.6755 0.1765 252.2592);
+        --accent-foreground: oklch(0 0 0);
+        --destructive: oklch(0.704 0.191 22.216);
+        --border: oklch(1 0 0);
+        --input: oklch(1 0 0);
+        --ring: oklch(0.7044 0.1872 23.1858);
+        --chart-1: oklch(0.7044 0.1872 23.1858);
+        --chart-2: oklch(0.9691 0.2005 109.6228);
+        --chart-3: oklch(0.6755 0.1765 252.2592);
+        --chart-4: oklch(0.7395 0.2268 142.8504);
+        --chart-5: oklch(0.6131 0.2458 328.0714);
+        --sidebar: oklch(0 0 0);
+        --sidebar-foreground: oklch(1 0 0);
+        --sidebar-primary: oklch(0.7044 0.1872 23.1858);
+        --sidebar-primary-foreground: oklch(0 0 0);
+        --sidebar-accent: oklch(0.6755 0.1765 252.2592);
+        --sidebar-accent-foreground: oklch(0 0 0);
+        --sidebar-border: oklch(1 0 0);
+        --sidebar-ring: oklch(0.7044 0.1872 23.1858);
+    }
+}
+
+
 [data-theme-preset="underground"] {
     --base-50: oklch(0.984 0.0022 247.84);
     --base-100: oklch(0.9687 0.0051 247.88);
@@ -850,3 +932,30 @@ body {
 /* Scale */
 
 
+
+/* Tailwind v4 inlines shadow values into its utilities, so the theme's --shadow-* tokens
+   are wired in explicitly for the hard-offset brutalist look. */
+[data-theme-preset="neo-brutalism"] .shadow-2xs {
+    --tw-shadow: var(--shadow-2xs);
+}
+[data-theme-preset="neo-brutalism"] .shadow-xs {
+    --tw-shadow: var(--shadow-xs);
+}
+[data-theme-preset="neo-brutalism"] .shadow-sm {
+    --tw-shadow: var(--shadow-sm);
+}
+[data-theme-preset="neo-brutalism"] .shadow-md {
+    --tw-shadow: var(--shadow-md);
+}
+[data-theme-preset="neo-brutalism"] .shadow-lg {
+    --tw-shadow: var(--shadow-lg);
+}
+[data-theme-preset="neo-brutalism"] .shadow-xl {
+    --tw-shadow: var(--shadow-xl);
+}
+[data-theme-preset="neo-brutalism"] .shadow-2xl {
+    --tw-shadow: var(--shadow-2xl);
+}
+[data-theme-preset="neo-brutalism"] .shadow {
+    --tw-shadow: var(--shadow);
+}
