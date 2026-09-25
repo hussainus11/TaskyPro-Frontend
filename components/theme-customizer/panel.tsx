@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   PresetSelector,
-  BackgroundSelector,
   SidebarModeSelector,
   ThemeScaleSelector,
   ColorModeSelector,
@@ -34,7 +33,6 @@ export function ThemeCustomizerPanel() {
         align={isMobile ? "center" : "end"}>
         <div className="grid space-y-4">
           <PresetSelector />
-          <BackgroundSelector />
           <ThemeScaleSelector />
           <ThemeRadiusSelector />
           <ColorModeSelector />

@@ -10,7 +10,7 @@ import "@fontsource-variable/inter";
 import "./globals.css";
 
 import { ActiveThemeProvider } from "@/components/active-theme";
-import { DEFAULT_THEME, getWorkspaceBackground } from "@/lib/themes";
+import { DEFAULT_THEME } from "@/lib/themes";
 import { Toaster } from "@/components/ui/sonner";
 
 export default async function RootLayout({
@@ -24,14 +24,12 @@ export default async function RootLayout({
     scale: (cookieStore.get("theme_scale")?.value ?? DEFAULT_THEME.scale) as any,
     radius: (cookieStore.get("theme_radius")?.value ?? DEFAULT_THEME.radius) as any,
     contentLayout: (cookieStore.get("theme_content_layout")?.value ??
-      DEFAULT_THEME.contentLayout) as any,
-    background: cookieStore.get("theme_background")?.value ?? DEFAULT_THEME.background
+      DEFAULT_THEME.contentLayout) as any
   };
-  const workspaceBackground = getWorkspaceBackground(themeSettings.background);
 
   const bodyAttributes = Object.fromEntries(
     Object.entries(themeSettings)
-      .filter(([key, value]) => value && key !== "background")
+      .filter(([_, value]) => value)
       .map(([key, value]) => [`data-theme-${key.replace(/([A-Z])/g, "-$1").toLowerCase()}`, value])
   );
 
@@ -40,14 +38,7 @@ export default async function RootLayout({
       <body
         suppressHydrationWarning
         className={cn("bg-background group/layout font-sans", fontVariables)}
-        {...bodyAttributes}
-        {...(workspaceBackground.css
-          ? {
-              "data-theme-background": workspaceBackground.value,
-              "data-theme-background-tone": workspaceBackground.tone,
-              style: { "--workspace-bg": workspaceBackground.css } as React.CSSProperties
-            }
-          : {})}>
+        {...bodyAttributes}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

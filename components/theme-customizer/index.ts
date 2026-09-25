@@ -1,4 +1,3 @@
-export * from "./background-selector";
 export * from "./color-mode-selector";
 export * from "./content-layout-selector";
 export * from "./preset-selector";
