@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GripVertical, Pencil, X, ArrowRight, Palette, Plus, Trophy, XCircle } from "lucide-react";
@@ -430,6 +430,11 @@ export default function LeadStagesPage() {
   const [isEditing, setIsEditing] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  // Guards the one-time "create the Initial/Closed Won stage if missing" logic below
+  // against firing twice concurrently (e.g. React Strict Mode's double-invoked effect
+  // in dev), which otherwise creates two rows a few ms apart before either request
+  // can see the other's result.
+  const didLoadStages = useRef(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -440,6 +445,9 @@ export default function LeadStagesPage() {
 
   // Load stages from backend
   useEffect(() => {
+    if (didLoadStages.current) return;
+    didLoadStages.current = true;
+
     const loadStages = async () => {
       try {
         setLoading(true);
