@@ -101,6 +101,12 @@ export function buildPermissionTreeFromNav(menuGroups: NavGroup[]): PermissionRe
 
   // Process each navigation group
   menuGroups.forEach((group) => {
+    // Platform Admin (Companies/Billing) is gated by Company.isPlatformOwner, not by
+    // Role/PermissionSetting (see checkResourcePermission on the backend) - it isn't
+    // something a role's access can actually grant or revoke, so it has no place in
+    // the Access Permissions editor even for the platform-owner company itself.
+    if (group.title === "Platform Admin") return;
+
     const groupCleanTitle = group.title
       .toLowerCase()
       .replace(/\s+/g, "-")
