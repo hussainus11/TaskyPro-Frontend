@@ -1074,7 +1074,7 @@ export function NavMain() {
       onDragEnd={handleDragEnd}>
       {enhancedNavItems.map((nav) => (
         <SidebarGroup key={nav.title}>
-          <SidebarGroupLabel>{nav.title}</SidebarGroupLabel>
+          {nav.title !== "Dashboards" && <SidebarGroupLabel>{nav.title}</SidebarGroupLabel>}
           <SidebarGroupContent className="flex flex-col gap-2">
             <SidebarMenu>
               <SortableContext

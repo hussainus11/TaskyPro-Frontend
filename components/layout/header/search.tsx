@@ -65,7 +65,7 @@ export default function Search() {
           <CommandEmpty>No results found.</CommandEmpty>
           {navItems.map((route) => (
             <React.Fragment key={route.title}>
-              <CommandGroup heading={route.title}>
+              <CommandGroup heading={route.title === "Dashboards" ? undefined : route.title}>
                 {route.items.map((item, key) => (
                   <CommandItem
                     key={key}
