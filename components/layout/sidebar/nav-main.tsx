@@ -103,7 +103,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-type NavItem = {
+export type NavItem = {
   title: string;
   href: string;
   icon?: LucideIcon;
@@ -114,7 +114,7 @@ type NavItem = {
   items?: NavItem[];
 };
 
-type NavGroup = {
+export type NavGroup = {
   title: string;
   items: NavItem[];
 };
@@ -141,7 +141,7 @@ function filterNavItemsDeep(items: NavItem[]): NavItem[] {
     .filter((i) => (i.items ? i.items.length > 0 || i.href !== "#" : true));
 }
 
-function filterNavGroups(groups: NavGroup[]): NavGroup[] {
+export function filterNavGroups(groups: NavGroup[]): NavGroup[] {
   return groups
     .filter((g) => !HIDDEN_GROUP_TITLES.has(g.title))
     .map((g) => ({ ...g, items: filterNavItemsDeep(g.items) }))
@@ -250,7 +250,7 @@ const getIconName = (icon: LucideIcon | undefined): string | null => {
 };
 
 // Transform API menu items to NavItem format
-const transformMenuItem = (item: any): NavItem & { id?: number } => {
+export const transformMenuItem = (item: any): NavItem & { id?: number } => {
   const navItem: NavItem & { id?: number } = {
     title: item.title,
     href: item.href,
