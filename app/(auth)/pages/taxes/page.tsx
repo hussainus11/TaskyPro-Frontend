@@ -267,7 +267,11 @@ export default function TaxesPage() {
     <>
       <div className="flex items-center justify-between space-y-2">
         <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Taxes</h1>
-        <Button onClick={() => setDialogOpen(true)}>
+        <Button
+          onClick={() => {
+            setEditingTax(null);
+            setDialogOpen(true);
+          }}>
           <Plus className="mr-2 h-4 w-4" />
           <span className="hidden lg:inline">Add Tax</span>
         </Button>
@@ -370,7 +374,7 @@ export default function TaxesPage() {
 
       <TaxDialog
         open={dialogOpen}
-        onOpenChange={setDialogOpen}
+        onOpenChange={(open) => (open ? setDialogOpen(true) : handleDialogClose())}
         tax={editingTax}
         onSuccess={handleDialogSuccess}
       />

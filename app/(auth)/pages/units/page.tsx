@@ -257,7 +257,11 @@ export default function UnitsPage() {
     <>
       <div className="flex items-center justify-between space-y-2">
         <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Units of Measurement</h1>
-        <Button onClick={() => setDialogOpen(true)}>
+        <Button
+          onClick={() => {
+            setEditingUnit(null);
+            setDialogOpen(true);
+          }}>
           <Plus className="mr-2 h-4 w-4" />
           <span className="hidden lg:inline">Add Unit</span>
         </Button>
@@ -360,7 +364,7 @@ export default function UnitsPage() {
 
       <UnitDialog
         open={dialogOpen}
-        onOpenChange={setDialogOpen}
+        onOpenChange={(open) => (open ? setDialogOpen(true) : handleDialogClose())}
         unit={editingUnit}
         onSuccess={handleDialogSuccess}
       />
