@@ -274,7 +274,11 @@ export default function UserRolesPage() {
     <>
       <div className="flex items-center justify-between space-y-2">
         <h1 className="text-xl font-bold tracking-tight lg:text-2xl">User Roles</h1>
-        <Button onClick={() => setDialogOpen(true)}>
+        <Button
+          onClick={() => {
+            setEditingRole(null);
+            setDialogOpen(true);
+          }}>
           <Plus className="mr-2 h-4 w-4" />
           <span className="hidden lg:inline">Add Role</span>
         </Button>
@@ -377,7 +381,7 @@ export default function UserRolesPage() {
 
       <UserRoleDialog
         open={dialogOpen}
-        onOpenChange={setDialogOpen}
+        onOpenChange={(open) => (open ? setDialogOpen(true) : handleDialogClose())}
         role={editingRole}
         onSuccess={handleDialogSuccess}
       />
