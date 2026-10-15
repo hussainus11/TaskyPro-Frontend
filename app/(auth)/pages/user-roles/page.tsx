@@ -14,7 +14,8 @@ import {
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { ArrowUpDown, Columns, MoreHorizontal, Plus, Pencil, Trash2 } from "lucide-react";
+import { ArrowLeft, ArrowUpDown, Columns, MoreHorizontal, Plus, Pencil, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -182,6 +183,7 @@ export const createColumns = (
 ];
 
 export default function UserRolesPage() {
+  const router = useRouter();
   const [roles, setRoles] = useState<UserRole[]>([]);
   const [loading, setLoading] = useState(true);
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -273,7 +275,12 @@ export default function UserRolesPage() {
   return (
     <>
       <div className="flex items-center justify-between space-y-2">
-        <h1 className="text-xl font-bold tracking-tight lg:text-2xl">User Roles</h1>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" onClick={() => router.push("/crm/settings/permissions")}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <h1 className="text-xl font-bold tracking-tight lg:text-2xl">User Roles</h1>
+        </div>
         <Button
           onClick={() => {
             setEditingRole(null);

@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { permissionSettingsApi } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth";
 import { toast } from "sonner";
-import { Loader2, Save, ChevronRight, ChevronDown, LayoutGrid, List, Layers, Table2, HelpCircle } from "lucide-react";
+import { ArrowLeft, Loader2, Save, ChevronRight, ChevronDown, LayoutGrid, List, Layers, Table2, HelpCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { PermissionTreeNode, PermissionData } from "./components/permission-tree-node";
 import { PermissionListView } from "./components/permission-list-view";
 import { PermissionGroupedView } from "./components/permission-grouped-view";
@@ -245,6 +246,7 @@ function withCustomPagesInPagesSection(
 }
 
 export default function PermissionSettingsPage() {
+  const router = useRouter();
   const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -1054,14 +1056,19 @@ export default function PermissionSettingsPage() {
   return (
     <div className="space-y-4 h-[calc(100vh-8rem)] flex flex-col">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Access permissions</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            {viewMode === "matrix" 
-              ? "Configure permissions across all roles in a matrix view"
-              : "Configure permissions for roles. Parent menus with children do not have permissions - only their children do. Menus without children have permissions."
-            }
-          </p>
+        <div className="flex items-start gap-2">
+          <Button variant="ghost" size="icon" className="mt-0.5" onClick={() => router.push("/crm/settings/permissions")}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight lg:text-2xl">Access permissions</h1>
+            <p className="text-muted-foreground text-sm mt-1">
+              {viewMode === "matrix"
+                ? "Configure permissions across all roles in a matrix view"
+                : "Configure permissions for roles. Parent menus with children do not have permissions - only their children do. Menus without children have permissions."
+              }
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           {viewMode === "matrix" && (
