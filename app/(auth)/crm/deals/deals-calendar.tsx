@@ -52,6 +52,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { TemplateViewerDialog } from "@/app/(auth)/pages/form-builder/template-viewer-dialog";
 import { formTemplatesApi, entityDataApi } from "@/lib/api";
+import { getEntityDisplayName } from "../components/entity-display-name";
 
 export type Deal = {
   id: string;
@@ -250,7 +251,7 @@ export function DealsCalendar({
                         !deal.priority && "bg-muted text-muted-foreground"
                       )}
                     >
-                      {deal.name || deal.email || "Untitled Deal"}
+                      {getEntityDisplayName(deal, deal.email || "Untitled Deal")}
                     </div>
                   ))}
                   {dayDeals.length > 3 && (
@@ -324,7 +325,7 @@ export function DealsCalendar({
                           deal.priority === "low" && "bg-blue-100 text-blue-800"
                         )}
                       >
-                        {deal.name || deal.email}
+                        {getEntityDisplayName(deal, deal.email || "")}
                       </div>
                     ))}
                   </div>
@@ -377,7 +378,7 @@ export function DealsCalendar({
                       <CardContent className="p-3">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <div className="font-medium">{deal.name || "Untitled Deal"}</div>
+                            <div className="font-medium">{getEntityDisplayName(deal, "Untitled Deal")}</div>
                             {deal.email && (
                               <div className="text-sm text-muted-foreground">{deal.email}</div>
                             )}
@@ -452,7 +453,7 @@ export function DealsCalendar({
                   <CardContent className="p-3">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <div className="font-medium">{deal.name || "Untitled Deal"}</div>
+                        <div className="font-medium">{getEntityDisplayName(deal, "Untitled Deal")}</div>
                         <div className="text-sm text-muted-foreground space-y-1">
                           {deal.email && <div>{deal.email}</div>}
                           {deal.phone && <div>{deal.phone}</div>}

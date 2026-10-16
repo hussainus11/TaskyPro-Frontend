@@ -53,6 +53,7 @@ import { toast } from "sonner";
 import { TemplateViewerDialog } from "@/app/(auth)/pages/form-builder/template-viewer-dialog";
 import { formTemplatesApi, entityDataApi } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth";
+import { getEntityDisplayName } from "../components/entity-display-name";
 
 export type Lead = {
   id: string;
@@ -251,7 +252,7 @@ export function LeadsCalendar({
                         !lead.priority && "bg-muted text-muted-foreground"
                       )}
                     >
-                      {lead.name || lead.email || "Untitled Lead"}
+                      {getEntityDisplayName(lead, lead.email || "Untitled Lead")}
                     </div>
                   ))}
                   {dayLeads.length > 3 && (
@@ -325,7 +326,7 @@ export function LeadsCalendar({
                           lead.priority === "low" && "bg-blue-100 text-blue-800"
                         )}
                       >
-                        {lead.name || lead.email}
+                        {getEntityDisplayName(lead, lead.email || "")}
                       </div>
                     ))}
                   </div>
@@ -378,7 +379,7 @@ export function LeadsCalendar({
                       <CardContent className="p-3">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <div className="font-medium">{lead.name || "Untitled Lead"}</div>
+                            <div className="font-medium">{getEntityDisplayName(lead, "Untitled Lead")}</div>
                             {lead.email && (
                               <div className="text-sm text-muted-foreground">{lead.email}</div>
                             )}
@@ -453,7 +454,7 @@ export function LeadsCalendar({
                   <CardContent className="p-3">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <div className="font-medium">{lead.name || "Untitled Lead"}</div>
+                        <div className="font-medium">{getEntityDisplayName(lead, "Untitled Lead")}</div>
                         <div className="text-sm text-muted-foreground space-y-1">
                           {lead.email && <div>{lead.email}</div>}
                           {lead.phone && <div>{lead.phone}</div>}

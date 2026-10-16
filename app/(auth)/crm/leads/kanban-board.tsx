@@ -73,6 +73,7 @@ import { toast } from "sonner";
 import { TemplateViewerDialog } from "@/app/(auth)/pages/form-builder/template-viewer-dialog";
 import { getCurrentUser } from "@/lib/auth";
 import { CsvExportDialog } from "../components/csv-export-dialog";
+import { getEntityDisplayName } from "../components/entity-display-name";
 import { CsvImportDialog } from "../components/csv-import-dialog";
 import { downloadTextFile, toCsv } from "../components/csv-utils";
 
@@ -391,7 +392,7 @@ export default function KanbanBoard() {
       filtered[columnKey] = columns[columnKey].filter((lead) => {
         const searchMatch =
           searchQuery === "" ||
-          (lead.name?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false) ||
+          getEntityDisplayName(lead, "").toLowerCase().includes(searchQuery.toLowerCase()) ||
           (lead.email?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false) ||
           (lead.company?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false);
 
@@ -1123,7 +1124,7 @@ export default function KanbanBoard() {
                                   <div className="flex items-start justify-between gap-2">
                                     <div className="flex-1 min-w-0">
                                       <CardTitle className="text-sm font-semibold leading-tight">
-                                        {lead.name || "Unnamed Lead"}
+                                        {getEntityDisplayName(lead, "Unnamed Lead")}
                                       </CardTitle>
                                       {lead.company && (
                                         <div className="flex items-center gap-1 mt-1">
@@ -1529,7 +1530,7 @@ export default function KanbanBoard() {
             <AlertDialogTitle>Delete lead?</AlertDialogTitle>
             <AlertDialogDescription>
               This will permanently delete{" "}
-              <span className="font-medium">{leadDeleteTarget?.name || "this lead"}</span>.
+              <span className="font-medium">{leadDeleteTarget ? getEntityDisplayName(leadDeleteTarget, "this lead") : "this lead"}</span>.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

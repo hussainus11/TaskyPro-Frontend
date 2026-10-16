@@ -80,6 +80,7 @@ import { ManagePipelinesDialog } from "./manage-pipelines-dialog";
 import { DealsTable } from "./deals-table";
 import { DealsCalendar, Deal as DealCalendarType } from "./deals-calendar";
 import { CsvExportDialog } from "../components/csv-export-dialog";
+import { getEntityDisplayName } from "../components/entity-display-name";
 import { CsvImportDialog } from "../components/csv-import-dialog";
 import { downloadTextFile, toCsv } from "../components/csv-utils";
 
@@ -584,7 +585,7 @@ export default function KanbanBoard() {
         const searchMatch = hasAdvanced
           ? true
           : searchQuery === "" ||
-            (deal.name?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false) ||
+            getEntityDisplayName(deal, "").toLowerCase().includes(searchQuery.toLowerCase()) ||
             (deal.email?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false) ||
             (deal.company?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false);
 
@@ -1250,7 +1251,7 @@ export default function KanbanBoard() {
                               <div className="flex items-start justify-between gap-2">
                                 <div className="flex-1 min-w-0">
                                   <CardTitle className="text-sm font-semibold leading-tight">
-                                    {deal.name || "Unnamed Deal"}
+                                    {getEntityDisplayName(deal, "Unnamed Deal")}
                                   </CardTitle>
                                   {deal.company && (
                                     <div className="flex items-center gap-1 mt-1">
@@ -1483,7 +1484,7 @@ export default function KanbanBoard() {
             <AlertDialogTitle>Delete deal?</AlertDialogTitle>
             <AlertDialogDescription>
               This will permanently delete{" "}
-              <span className="font-medium">{dealDeleteTarget?.name || "this deal"}</span>.
+              <span className="font-medium">{dealDeleteTarget ? getEntityDisplayName(dealDeleteTarget, "this deal") : "this deal"}</span>.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
