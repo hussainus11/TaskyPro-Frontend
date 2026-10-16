@@ -346,8 +346,28 @@ export function DealsTable({ deals: propDeals, loading: propLoading = false, onR
               return <StatusBadge value={String(value)} />;
             }
 
+            if (field.type === "address" && typeof value === "object" && !Array.isArray(value)) {
+              const addr = value as Record<string, string>;
+              const parts = [addr.street, addr.city, addr.state, addr.zip, addr.country].filter(Boolean);
+              return parts.length > 0 ? parts.join(", ") : <span className="text-muted-foreground">-</span>;
+            }
+
+            if (Array.isArray(value)) {
+              const formatted = value
+                .map((item) =>
+                  item && typeof item === "object"
+                    ? Object.values(item).filter(Boolean).join(": ")
+                    : String(item)
+                )
+                .filter(Boolean);
+              return formatted.length > 0 ? formatted.join(", ") : <span className="text-muted-foreground">-</span>;
+            }
+
             if (typeof value === "object" && value !== null) {
-              return JSON.stringify(value);
+              const formatted = Object.values(value as Record<string, unknown>)
+                .filter((v) => v !== null && v !== undefined && v !== "")
+                .join(", ");
+              return formatted || <span className="text-muted-foreground">-</span>;
             }
 
             const str = String(value);
